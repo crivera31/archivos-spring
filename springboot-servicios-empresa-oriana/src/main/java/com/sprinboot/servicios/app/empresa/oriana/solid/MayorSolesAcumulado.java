@@ -1,0 +1,44 @@
+package com.sprinboot.servicios.app.empresa.oriana.solid;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sprinboot.servicios.app.empresa.oriana.dto.SaldoTot;
+import com.sprinboot.servicios.app.empresa.oriana.exceptions.ClaseException;
+import com.sprinboot.servicios.app.empresa.oriana.jsons.LibroMayorSisRest;
+import com.sprinboot.servicios.app.empresa.oriana.service.MayorSistemaServiceInterface;
+import com.sprinboot.servicios.empresa.commons.entity.Voucher;
+
+@Service("MayorSolesAcumulado")
+public class MayorSolesAcumulado implements OpcionLibroMayorSis {
+
+	private MayorSistemaServiceInterface service;
+	
+	@Autowired
+	public MayorSolesAcumulado(MayorSistemaServiceInterface service) {
+		this.service = service;
+	}
+
+	@Override
+	public List<LibroMayorSisRest> proceso(Integer idperiodo, String anio, Integer codmes, Integer idperiodoanio,
+			String codCuenta) throws ClaseException {
+		
+		List<Voucher> listVoucher = service.filtroDaoAcumulado(codCuenta,  anio, codmes);
+		List<LibroMayorSisRest> listaRest = new ArrayList<LibroMayorSisRest>();
+		listaRest = service.listarRest(listVoucher, "S");
+		SaldoTot total = new SaldoTot();
+		total.setSaldoTotal(new BigDecimal("0.00"));
+		listaRest.stream().map(det->{
+			total.setSaldoTotal(service.obtenerSaldoPorItem(total.getSaldoTotal(), det.getDebito(), det.getCredito()));
+			det.setSaldo(total.getSaldoTotal());
+			 return det;
+		   }
+		).collect(Collectors.toList());
+		return listaRest;
+	}
+}

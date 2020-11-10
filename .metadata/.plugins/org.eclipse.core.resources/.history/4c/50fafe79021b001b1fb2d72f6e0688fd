@@ -1,0 +1,5 @@
+package com.sprinboot.servicios.app.empresa.oriana.jsons;
+
+public class ComprobanteRest {
+
+}

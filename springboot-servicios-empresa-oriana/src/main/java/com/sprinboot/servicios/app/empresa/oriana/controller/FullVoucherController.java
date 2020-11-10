@@ -1,0 +1,328 @@
+package com.sprinboot.servicios.app.empresa.oriana.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sprinboot.servicios.app.empresa.oriana.dao.VoucherDao;
+import com.sprinboot.servicios.app.empresa.oriana.service.AsientoServiceInterface;
+import com.sprinboot.servicios.app.empresa.oriana.service.RegistroDocumentosServiceInterface;
+import com.sprinboot.servicios.app.empresa.oriana.service.RegistroLibrosServiceInterface;
+import com.sprinboot.servicios.app.empresa.oriana.service.VoucherServiceInterface;
+import com.sprinboot.servicios.empresa.commons.entity.Asiento;
+import com.sprinboot.servicios.empresa.commons.entity.Libro;
+import com.sprinboot.servicios.empresa.commons.entity.RegistroDocumentos;
+import com.sprinboot.servicios.empresa.commons.entity.RegistroLibros;
+import com.sprinboot.servicios.empresa.commons.entity.Voucher;
+
+@RestController
+@RequestMapping("full-vou")
+public class FullVoucherController {
+
+	@Autowired
+	AsientoServiceInterface asientoServiceInterface;
+	
+	@Autowired
+	VoucherServiceInterface voucherServiceInterface;
+	
+	@Autowired
+	RegistroDocumentosServiceInterface registroDocumentosServiceInterface;
+	
+	@Autowired
+    RegistroLibrosServiceInterface registroLibrosServiceInterface ;
+	
+	@PostMapping("add")
+	public ResponseEntity<?> createCab(@Valid @RequestBody Asiento request){
+		//Map<String,Object> response = new HashMap<>();
+       
+		if (request.getLstVoucher().size()>0 ) {
+			 for (Voucher v : request.getLstVoucher()) {
+					if(v.getDebe()==null && v.getHaber()==null && v.getEstadoVoucher()==1) {
+						System.out.println("TIENE TODO NULL SE COLOCARA EN ESTADO 0");
+						v.setEstadoVoucher(0);
+					}
+				}
+		}
+		
+		
+		Asiento asiento= new Asiento();
+		try {
+			asiento = asientoServiceInterface.asientoFullVoucher(request);
+			//******************response***************
+            
+    	    List<Voucher> lstVoucher = new ArrayList<>();
+
+			for(Voucher voucherResponse : asiento.getLstVoucher()) {
+	             
+				 voucherResponse.setAsiento(null);
+				if(voucherResponse.getVoucherRef()!=null) {
+		            voucherResponse.getVoucherRef().setVoucher(null);
+				}
+				if (voucherResponse.getRegistroDocumento()!=null) {
+		            voucherResponse.getRegistroDocumento().setVoucher(null);	
+				}
+				if (voucherResponse.getRegistroLibro()!=null) {
+		            voucherResponse.getRegistroLibro().setVoucher(null);
+				}
+
+				if(voucherResponse.getEstadoVoucher()==1){
+		            lstVoucher.add(voucherResponse);
+				}
+				
+				
+			}
+			asiento.setLstVoucher(lstVoucher);
+			//for (Voucher voucherRequest : request.getLstVoucher()) {
+				 
+				/*Voucher voucher =  new Voucher();
+				voucherRequest.setAsiento(request);
+				voucher = voucherServiceInterface.save(voucherRequest);
+				RegistroDocumentos regDoc = new RegistroDocumentos();
+				regDoc = voucherRequest.getRegistroDocumento();
+				regDoc.setVoucher(voucher); 
+				regDoc = registroDocumentosServiceInterface.save(regDoc);
+				voucher.setRegistroDocumento(regDoc);
+				voucher = voucherServiceInterface.save(voucher);*/
+				   
+			//}
+			
+				
+			
+		}catch(DataAccessException e) {
+			//return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(request);
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+			//response.put("mensaje","Error en el Servidor");
+			//response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			//response.put("respuesta Servidor",response);
+			//return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		//response.put("mensaje", "EL VOUCHER FUE CREADO EXITOSAMENTE");
+		//response.put("voucher", voucher);
+		//return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+		return ResponseEntity.status(HttpStatus.CREATED).body(asiento);
+
+	}
+	
+	@PostMapping(value="/manual/vou")
+    public ResponseEntity<?> opeVoucher(@Valid @RequestBody Voucher request) {
+		Voucher voucher= new Voucher();		
+		try {
+			
+			Asiento asiento = asientoServiceInterface.findByAsiento(request.getAsiento().getId());
+			request.setAsiento(asiento);
+			voucher =  voucherServiceInterface.saveManual(request);
+			voucher.getAsiento().setLstVoucher(null);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(voucher);
+	}
+	
+	@PostMapping(value="/manual/reglib")
+    public ResponseEntity<?> opeRegLib(@Valid @RequestBody RegistroLibros request) {
+		RegistroLibros registroLibros= new RegistroLibros();		
+		try {
+			registroLibros =  registroLibrosServiceInterface.saveManual(request);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(registroLibros);
+	}
+	
+	@PostMapping(value="/manual/regdoc")
+    public ResponseEntity<?> opeRegDoc(@Valid @RequestBody RegistroDocumentos request) {
+		RegistroDocumentos registroDocumentos= new RegistroDocumentos();		
+		try {
+			registroDocumentos =  registroDocumentosServiceInterface.saveManual(request);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(registroDocumentos);
+	}
+	
+	
+	@GetMapping(value="/lstlibros")
+    public ResponseEntity<?> lstLibros() {
+		 List<Libro>lstLibros = new ArrayList<>();
+		try {
+		  lstLibros =  registroLibrosServiceInterface.findByAllEnabled();
+			
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(lstLibros);
+	}
+	
+	
+	@GetMapping(value="/id-voucher/{id}")
+    public ResponseEntity<?> getidVoucher(@PathVariable Integer id) {
+		 Voucher voucher= null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+		  voucher =  voucherServiceInterface.obtenerVoucher(id);
+		} catch (Exception e) {
+		     	
+			 response.put("mensaje", "Error con el id VOUCHER = "+id + "   500 BUSCARDO EL VOUCHER _"+e.getMessage());
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(voucher!=null) {
+			voucher.setAsiento(null);
+			 if(voucher.getRegistroDocumento()!=null) {
+				  
+				  RegistroDocumentos reg = voucher.getRegistroDocumento(); 
+				  reg.setVoucher(null);
+				  voucher.setRegistroDocumento(reg);
+				  if(voucher.getVoucherRef()!=null) {
+					voucher.getVoucherRef().setVoucher(null);  
+				  }
+				  if(voucher.getRegistroLibro()!=null){
+					voucher.getRegistroLibro().setVoucher(null);  
+				  }
+					  
+				  return ResponseEntity.status(HttpStatus.OK).body(voucher);
+			 }else {
+				  return new ResponseEntity<Object>(HttpStatus.NOT_ACCEPTABLE);
+			 }
+		}else {
+			response.put("mensaje", "Error con el id VOUCHER = "+id + " ES NULL");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+	
+	}
+	
+	
+	
+	@GetMapping(value="/buscar-factura/{serie}/{ruc}/{codDocumento}")
+    public ResponseEntity<?> buscarFactura(@PathVariable String serie , @PathVariable String ruc , @PathVariable String codDocumento) {
+		Map<String, Object> response = new HashMap<>();
+	    List<RegistroLibros>lstRepetidas = new ArrayList<>();
+		try {
+			lstRepetidas = registroLibrosServiceInterface.buscarVoucher(serie, ruc, codDocumento);
+		}
+		catch(DataAccessException e) {
+			response.put("mensaje","Error en el Servidor");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(lstRepetidas.size()>0) {
+			if(lstRepetidas.size()>1) {
+				String repet ="";
+				for (RegistroLibros r : lstRepetidas) {
+					 repet = repet  + r.getVoucher().getAsiento().getNumAsiento() + " [ MES : "+r.getVoucher().getAsiento().getCodMes() +" ] , "; 
+				     r.setVoucher(null);
+				}
+				response.put("mensaje","Se encontro la factura ya registrada en mas de un asiento, verificar los siguientes asientos:"+repet);
+				response.put("lista",1);
+				response.put("lstRepetidas", lstRepetidas);
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+			}else {
+				//cuando e sigual a 1
+				String repet ="";
+				repet = repet  + lstRepetidas.get(0).getVoucher().getAsiento().getNumAsiento() + " [ MES : "+lstRepetidas.get(0).getVoucher().getAsiento().getCodMes() +" ]"; 
+				response.put("mensaje","Se encontro la factura ya registrada en el asiento "+repet);
+				response.put("lista",0);
+				response.put("idreglibro",lstRepetidas.get(0).getId());
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+			}
+		}else {  
+			    response.put("mensaje", "la factura , el codigo ruc y el documento seleccionado no existe, asi que puede crear");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+	}
+	
+
+	//SOLO PARA ACTUALIZAR DB
+
+	@Autowired
+    VoucherDao voucherDao ;
+	
+	@GetMapping(value="/colocarconsorcios")
+    public ResponseEntity<?> getColocarConsorcios() {
+		Map<String, Object> response = new HashMap<>();
+		//List<ConsistenciaDto> listConsistencia = new ArrayList<ConsistenciaDto>();
+		try {
+			List<Voucher> lstvoucher = new ArrayList<Voucher>();
+			lstvoucher = voucherDao.traerConsorcios();
+			
+	        for (Voucher voucher : lstvoucher) {
+	        	Voucher vou = new Voucher();
+	        	 vou = voucherDao.colcoarigvunidad(voucher.getAsiento().getId());
+	        	if(vou!=null) {
+	        		//40111
+	        	    vou.setCodUnidadNegocio("0001");
+	        	    vou.setIdUnidadNegocio(2);
+	        	    voucherDao.save(vou);
+	        	}else {
+	        		//1673
+	        		vou = voucherDao.colcoarigvPoraplicarunidad(voucher.getAsiento().getId());
+	        		if(vou!=null) {
+	        			List<Voucher> lstAplicar = new ArrayList<Voucher>();
+	        			// tiene por aplicar
+	        			lstAplicar = voucherDao.buscarAsientosIgvPOraplicar(vou.getSerieNumero().trim(), vou.getCodDocumento(), vou.getCodRuc().trim());
+	        			if (lstAplicar.size()> 2) {
+	        				String ads = "";
+	        				ads = ads + "ERROR = ESTE VOUCHER ESTA EN MAS DE DOS  ASIENTOS CON LA 1673 *** ";
+							System.out.println("ERROR = ESTE VOUCHER ESTA EN MAS DE DOS  ASIENTOS CON LA 1673");
+							ads = ads + "SERIE = "+vou.getSerieNumero().trim()+" doc = "+ vou.getCodDocumento()+ " RUC = "+ vou.getCodRuc().trim();
+							System.out.println("SERIE = "+vou.getSerieNumero().trim()+" doc = "+ vou.getCodDocumento()+ " RUC = "+ vou.getCodRuc().trim());
+							for (Voucher a : lstAplicar) {
+								System.out.println("NUM ASIENTO = "+a.getAsiento().getNumAsiento()+" MES = "+a.getAsiento().getCodMes()+"  estado vou + "+a.getEstadoVoucher());
+								ads = ads + "*****NUM ASIENTO = "+a.getAsiento().getNumAsiento()+" MES = "+a.getAsiento().getCodMes()+ "  estado vou + "+a.getEstadoVoucher();
+							}
+							
+							response.put("mensaje ", ads);
+							return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+						}else {
+							if (lstAplicar.size()==2) {
+								System.out.println("SI SE APLICO SE VA COLOCAR EL CONSORCIO");
+								for (Voucher ap : lstAplicar) {
+									Voucher vouigv = new Voucher();
+									vouigv = voucherDao.colcoarigvunidad(ap.getAsiento().getId());
+									if (vouigv!=null) {
+										vouigv.setCodUnidadNegocio("0001");
+										vouigv.setIdUnidadNegocio(2);
+						        	    voucherDao.save(vouigv);
+									}
+									
+								}
+							}else {
+								if (lstAplicar.size()==1) {
+									System.out.println("AUN NO SE APLICO ");
+								}
+							}
+						}
+	        			
+	        		}
+				}
+			} 
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "TODO OKEY");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	
+	}
+
+	
+	
+}

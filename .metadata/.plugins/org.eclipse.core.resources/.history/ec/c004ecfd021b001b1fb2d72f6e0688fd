@@ -1,0 +1,92 @@
+package com.sprinboot.servicios.app.empresa.oriana.jsons;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sprinboot.servicios.empresa.commons.entity.ComprobanteDet;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ComprobanteRest {
+
+	@JsonProperty("id")
+    private Integer id;	
+	
+	@JsonProperty("num_comprobante")
+	private Integer numComprobante;
+	
+	
+	@JsonProperty("ruc")
+	private String ruc;
+	
+	@JsonProperty("son")
+	private String son;
+	
+	@JsonProperty("documento")
+	private String documento;
+	
+	@JsonProperty("serie_numero")
+	private String serieNumero;
+	
+	@JsonProperty("detalle")
+	private String detalle;
+	
+	@JsonProperty("fecha_doc")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
+	private Date fechaDoc;
+	
+	@JsonProperty("fecha_comprobante")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
+	private Date fechaComprobante;
+	
+	@JsonProperty("total")
+	private BigDecimal total;
+	
+	@JsonProperty("descuento")
+	private BigDecimal descuento;
+	
+	@JsonProperty("neto_pagar")
+	private BigDecimal netoPagar;
+		
+	@JsonProperty("create_at")
+	@Temporal(TemporalType.DATE)
+	private Date createAt;
+	
+	@JsonProperty("forma_pago")
+	private String formaPago;
+
+	@JsonProperty("anio")
+	private String anio;
+	
+	@JsonProperty("unidad_negocio_id")
+	private Integer unidadNegocioId;
+	
+	@JsonProperty("num_cheque")
+	private String numCheque;
+	
+	@JsonProperty("cuenta_banco")
+	private String cuentaBanco;
+	
+	@JsonProperty("username")
+	private String username;
+	
+	@JsonProperty("estado_comprobante")
+	private Integer estadoComprobante;
+	
+	@JsonProperty("tipo_comprobante")
+	private String tipo_comprobante;
+	
+	@JsonProperty("comprobante")
+	private List<ComprobanteDet> lstComprobanteDet;
+	
+	
+}

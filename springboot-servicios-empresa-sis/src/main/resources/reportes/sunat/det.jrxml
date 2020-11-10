@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="det" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="6" bottomMargin="20" uuid="6a3eb6b1-46e3-4298-85fc-d99aadfb1331">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codDocumento" class="java.lang.String"/>
+	<field name="listcompra" class="java.util.Collection"/>
+	<field name="otrosTributos" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="baseImpOpe" class="java.math.BigDecimal"/>
+	<field name="igvBaseImpOpe" class="java.math.BigDecimal"/>
+	<field name="baseImpAdq" class="java.math.BigDecimal"/>
+	<field name="igvBaseImpAdq" class="java.math.BigDecimal"/>
+	<field name="adqSinDer" class="java.math.BigDecimal"/>
+	<field name="igvBaseAdqSinDer" class="java.math.BigDecimal"/>
+	<field name="adqNoGrav" class="java.math.BigDecimal"/>
+	<field name="isc" class="java.math.BigDecimal"/>
+	<detail>
+		<band height="49">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport overflowType="Stretch">
+				<reportElement x="-20" y="11" width="842" height="18" uuid="224f42ee-5b55-4299-83ce-fce4204155c8"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{listcompra})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["src/main/resources/reportes/sunat/subdet.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="10" uuid="73f182dc-aee2-435e-ae6f-b1428ad2f83d"/>
+				<textElement verticalAlignment="Top">
+					<font size="4" isBold="true"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<text><![CDATA[Tipo Dco.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="0" width="66" height="10" uuid="2e9ff7ce-b707-4d01-a797-8708bf44fd0d"/>
+				<textElement verticalAlignment="Top">
+					<font size="4" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codDocumento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" mode="Transparent" x="218" y="34" width="48" height="6" uuid="e0c60cfd-b244-4c8a-98ef-fb0cc3a556fd"/>
+				<textElement>
+					<font size="4" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES:]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="270" y="30" width="279" height="1" uuid="c5c3fdab-74fe-4eb3-a01f-88da96ac4cec"/>
+			</line>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="511" y="35" width="38" height="5" uuid="ac345170-2b3c-4dd2-bc76-75ac020ca45c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4ac1b084-761d-4ba7-9270-9dd38411ad49"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="340" y="35" width="27" height="5" uuid="9dadb264-4513-405f-a1fe-31f56c050141">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{baseImpAdq}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="367" y="35" width="25" height="5" uuid="b3afdc77-06ac-4730-9cee-08c8aae793e5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{igvBaseImpAdq}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="392" y="35" width="24" height="5" uuid="24e7f243-f2e7-4755-8d59-c25c32b0dff4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adqSinDer}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="416" y="35" width="24" height="5" uuid="0b9e0241-9cf4-42a2-ab53-be563b47cd13">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{igvBaseAdqSinDer}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="440" y="35" width="26" height="5" uuid="cb8a1a2a-315a-4a48-abf9-81f25fac0e1f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adqNoGrav}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="466" y="35" width="20" height="5" uuid="2e12ba51-8207-40f1-9c28-b33fbb592743">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{isc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="486" y="35" width="25" height="5" uuid="9452839d-126a-4a3f-a7d3-41f0f3396dac">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{otrosTributos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="270" y="35" width="35" height="5" uuid="fb39380e-2c5b-4065-b161-be705d0737e6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{baseImpOpe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="FixRelativeToBottom" x="305" y="35" width="35" height="5" uuid="aec7320e-5eef-46c3-ad83-2c37cb1aac1e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1255f2a5-5439-4e42-88c8-460977f10694"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{igvBaseImpOpe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

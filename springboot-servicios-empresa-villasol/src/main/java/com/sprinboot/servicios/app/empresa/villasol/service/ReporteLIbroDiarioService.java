@@ -1,0 +1,366 @@
+package com.sprinboot.servicios.app.empresa.villasol.service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+ 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.sprinboot.servicios.app.empresa.villasol.client.DataServiceClient;
+import com.sprinboot.servicios.app.empresa.villasol.dao.AsientoDao;
+import com.sprinboot.servicios.app.empresa.villasol.dao.VoucherDao;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LEDiarioDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LEDiarioPorOrigenDao;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LEDiarioVoucherDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LEDiarioVucherDetDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LibroDiarioDetDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LibroDiarioDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.LibroDiarioTotalDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.RegistroComprasDetDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.RegistroComprasSubDetDto;
+import com.sprinboot.servicios.app.empresa.villasol.funciones.Funciones;
+import com.sprinboot.servicios.empresa.commons.entity.Asiento;
+import com.sprinboot.servicios.empresa.commons.entity.RegistroLibros;
+import com.sprinboot.servicios.empresa.commons.entity.Voucher;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+@Service
+public class ReporteLIbroDiarioService implements  ReporteLibroDiarioServiceInterface {
+
+	Logger logger = LoggerFactory.getLogger(ReporteLIbroDiarioService.class);
+
+	
+	@Autowired
+    DataServiceClient dataServiceClient; 
+	
+	@Autowired
+	VoucherDao voucherDao;
+	
+	@Autowired
+	AsientoDao asientoDao; 
+	
+	@Autowired
+	Funciones funciones;
+
+	
+	public List<LibroDiarioDto> getListLibroDiario(List<Asiento> lstAsiento,String moneda) {
+		List<LibroDiarioDto> lstLibro = new ArrayList<>();  
+		 
+		lstAsiento.forEach(asiento->{
+			LibroDiarioDto librodiario = new LibroDiarioDto();
+			if(moneda.equals("S")) {
+				librodiario.setSubTotalDebe(asiento.getTotalDebeSoles());
+				librodiario.setSubTotalHaber(asiento.getTotalHaberSoles());
+			}else{
+				
+				librodiario.setSubTotalDebe(asiento.getTotalDebeDolares());
+				librodiario.setSubTotalHaber(asiento.getTotalHaberDolares());
+			}
+			List<LibroDiarioDetDto> lstLibroDet = new ArrayList<>();
+			
+				asiento.getLstVoucher().forEach(voucher->{
+					if(voucher.getEstadoVoucher()==1) {
+						LibroDiarioDetDto librodiariodet = new LibroDiarioDetDto();
+						librodiariodet.setNumAsiento(asiento.getNumAsiento());
+						librodiariodet.setFechaAsiento(asiento.getFechaAsiento());
+						librodiariodet.setCodOrigen(asiento.getCodOrigen());
+						librodiariodet.setFechaAsiento(asiento.getFechaAsiento());
+						librodiariodet.setIdPeriodo(asiento.getIdPeriodo());
+						librodiariodet.setAnio(asiento.getAnio());
+						librodiariodet.setCodMes(asiento.getCodMes());
+						
+						librodiariodet.setCodOrigen(asiento.getCodOrigen());
+						librodiariodet.setCodPlan(voucher.getCodPlan());
+						librodiariodet.setNomPlan(voucher.getNomPlan());
+						librodiariodet.setDebe(voucher.getDebe());
+						librodiariodet.setHaber(voucher.getHaber());
+						librodiariodet.setAbreNomMoneda(voucher.getAbreNomMoneda());
+						librodiariodet.setTipoCambio(voucher.getTipoCambio());
+						librodiariodet.setEquivalente(voucher.getEquivalente());
+						librodiariodet.setCodDocumento(voucher.getCodDocumento());
+						librodiariodet.setSerieNumero(voucher.getSerieNumero());
+						librodiariodet.setCodRuc(voucher.getCodRuc());
+						librodiariodet.setRazonSocial(voucher.getRazonSocial());
+						librodiariodet.setCodUnidadNegocio(voucher.getCodUnidadNegocio());
+						librodiariodet.setGlosario(voucher.getGlosario());
+						librodiariodet.setFechaEmision(voucher.getFechaEmision());
+						librodiariodet.setFechaVencimiento(voucher.getFechaVencimiento());
+						librodiariodet.setCodTipoDoc(voucher.getCodUnidadNegocio());
+						librodiariodet.setEstadoVoucher(voucher.getEstadoVoucher());
+
+						if (voucher.getIdUnidadNegocio()!=null) {
+							System.out.println("TIENE ID UNIDAD NEGOCIO");
+							librodiariodet.setNomUnidadNegocio(dataServiceClient.findCentroCostoById(voucher.getIdUnidadNegocio()));
+						}
+						lstLibroDet.add(librodiariodet);
+					}	                
+				});
+				
+				librodiario.setLstLibroDiarioDetDto(lstLibroDet);
+			    lstLibro.add(librodiario);  
+			
+		});
+		
+		
+		return lstLibro;
+		//lstVoucher.forEach((final Voucher voucher)-> );
+    // eturn		
+	}
+	
+	
+	
+
+	@Override
+	@Transactional
+	public LibroDiarioTotalDto libroDiarioMensual(Integer periodo,String moneda){
+		LibroDiarioTotalDto diarioTotalDto = new LibroDiarioTotalDto();
+		diarioTotalDto.setLstLibroDiarioDto(this.getListLibroDiario(asientoDao.libroDiarioMensual(periodo),moneda));
+		diarioTotalDto.setDebetotal(voucherDao.totalLibroDebeDiarioMensual(moneda, periodo));
+		diarioTotalDto.setHabertotal(voucherDao.totalHaberLibroDiarioMensual(moneda, periodo));
+		return diarioTotalDto;
+	}	
+	
+	
+	@Override
+	@Transactional
+	public LibroDiarioTotalDto libroDiarioMensualConOrigen(Integer periodo,String moneda,String codOrigen){
+		LibroDiarioTotalDto diarioTotalDto = new LibroDiarioTotalDto();
+		diarioTotalDto.setLstLibroDiarioDto(this.getListLibroDiario(asientoDao.libroDiarioMensualConOrigen(periodo, codOrigen),moneda));
+		diarioTotalDto.setDebetotal(voucherDao.totalLibroDebeDiarioMensualConOrigen(moneda, periodo, codOrigen));
+		diarioTotalDto.setHabertotal(voucherDao.totalHaberLibroDiarioMensualConOrigen(moneda, periodo, codOrigen));
+		return diarioTotalDto;
+	}	
+	
+	
+	@Override
+	@Transactional
+	public LibroDiarioTotalDto libroDiarioAcumulado(String moneda,String anio,Integer mes){
+		LibroDiarioTotalDto diarioTotalDto = new LibroDiarioTotalDto();
+		
+		diarioTotalDto.setLstLibroDiarioDto(this.getListLibroDiario(asientoDao.libroDiarioAcumulado(mes, anio),moneda));
+		diarioTotalDto.setDebetotal(voucherDao.totaDebelibroDiarioAcumulado(moneda, mes, anio));
+		diarioTotalDto.setHabertotal(voucherDao.totaHaberlibroDiarioAcumulado(moneda, mes, anio));
+		return diarioTotalDto;
+	}	
+	
+	@Override
+	@Transactional
+	public LibroDiarioTotalDto libroDiarioAcumuladoConOrigen (String moneda,String anio,Integer mes,String codOrigen){
+		LibroDiarioTotalDto diarioTotalDto = new LibroDiarioTotalDto();
+		diarioTotalDto.setLstLibroDiarioDto(this.getListLibroDiario(asientoDao.libroDiarioAcumuladoConOrigen(mes, anio, codOrigen),moneda));
+		diarioTotalDto.setDebetotal(voucherDao.totaDebelibroDiarioAcumuladoConOrigen(moneda, mes, anio, codOrigen));
+		diarioTotalDto.setHabertotal(voucherDao.totaDebelibroDiarioAcumuladoConOrigen(moneda, mes, anio, codOrigen));
+		return diarioTotalDto;
+	}	
+	
+	/*
+	@Override
+	@Transactional
+	public List<LibroDiarioDto> libroDiario(String moneda, Integer mes, String anio, String codOrigen, Integer periodo) {
+        // CodOrigen != null es porque tien ela opcion por origen
+		if (codOrigen!=null) {
+			//periodo!=null es porque es mensual
+			 if(periodo!=null) {
+				return this.getListLibroDiario(asientoDao.libroDiarioMensualConOrigen(periodo, codOrigen));
+			}else {
+				// es acumulado
+				//condicional para asegurar que exista
+				if (mes!=null && anio!=null) {
+					return this.getListLibroDiario(asientoDao.libroDiarioAcumuladoConOrigen(mes, anio, codOrigen));
+				}else {
+					return null;
+				}
+			}
+		}else {
+			//es analitico o por resumen
+			//es mensual
+			if (periodo!=null) {
+				return this.getListLibroDiario(asientoDao.libroDiarioMensual(periodo));
+			}else {
+				//es acumulado
+				if (mes!=null && anio!=null) {
+					return this.getListLibroDiario(asientoDao.libroDiarioAcumulado(mes, anio));
+				}else {
+					return null;
+				}
+			}
+		}
+		
+	}
+	*/
+	
+	/******SUNAT**********/
+	
+	@Override
+	@Transactional
+	public LEDiarioPorOrigenDao libroDiarioSunat(String codOrigen, Integer codmes, String anio){
+		// Consultando los asientos con el codigo de ORigen especificado mes y año
+		List<Asiento> lstAsiento = asientoDao.libroDiarioSunat(codmes, anio, codOrigen);
+		//Iniczialinzado
+		List<LEDiarioVoucherDto> lstDiarioVocher = new ArrayList<LEDiarioVoucherDto>();
+		LEDiarioPorOrigenDao voucherPorOrigen = new LEDiarioPorOrigenDao();
+		
+		if(lstAsiento.size()>0) {
+		      logger.info("La lista de asiento con orgien "+codOrigen + "  no esta vacia");
+		      lstAsiento.forEach(asiento->{   
+                  
+		    	  if (asiento.getLstVoucher().size()>0) {
+		    		//Reordena la lista de vouchers aptos
+			    	  asiento.setLstVoucher(getOrdenarVouchers(asiento.getLstVoucher()));
+			    	  if (asiento.getLstVoucher()!=null) {
+						 //recorrido de vouchers por asiento
+			    		  
+			    		  LEDiarioVoucherDto diarioVoucher = new LEDiarioVoucherDto();
+			    		  // ingresando el DiariovouDEt en lista al DiarioVOucher
+			    		  diarioVoucher.setLstLeDiarioVucherDetDto(getIntroducirParametros(asiento.getLstVoucher()));
+			    		  //calculamos montos totales ponemos los montos totales debe y haber 
+			    		  diarioVoucher = getCalcularMontos(diarioVoucher);
+			    		  diarioVoucher.setNumAsiento(asiento.getNumAsiento());
+			    		  if (asiento.getFechaAsiento()!=null) {
+				    		  diarioVoucher.setFechaAsiento(funciones.getFechaToString(asiento.getFechaAsiento()));
+						  }
+			    		  //llenamos la lista 
+			    		  lstDiarioVocher.add(diarioVoucher);
+					  }
+			    	  
+				  }		      
+		      });
+		      
+
+		}
+		
+		//llenamos la cabeza
+		if (lstDiarioVocher.size()>0) {
+			voucherPorOrigen.setCodOrigen(codOrigen);
+			voucherPorOrigen.setListLeDiarioVoucherDto(lstDiarioVocher);
+			return voucherPorOrigen;
+		}else {
+			return null;
+		}
+		
+	}	
+	
+	
+	
+	// metdo para recorrer todo el voucher y solo seleccionar los voucher con estado 1
+	public List<Voucher> getOrdenarVouchers(List<Voucher> lstVoucher){
+		  List<Voucher> lstVoucherNew = new ArrayList<Voucher>();
+		  lstVoucher.forEach(voucher->{ 
+			  if (voucher.getEstadoVoucher()==1) {
+				   lstVoucherNew.add(voucher);
+		      }
+		  });
+		
+		if (lstVoucherNew.size()>0) {
+			return lstVoucherNew;
+		}else {
+			return null;
+		}
+		  
+		
+	}
+	
+	
+	public List<LEDiarioVucherDetDto> getIntroducirParametros(List<Voucher> lstVoucher) {
+		List<LEDiarioVucherDetDto> list = new ArrayList<LEDiarioVucherDetDto>();
+		lstVoucher.forEach(v->{  
+			    LEDiarioVucherDetDto voucherDto = new LEDiarioVucherDetDto();
+			  	 voucherDto.setId(v.getId());
+			  	 voucherDto.setAbreNomMoneda(v.getAbreNomMoneda());
+			  	 voucherDto.setCodDocumento(v.getCodDocumento());
+			  	 voucherDto.setCodPlan(v.getCodPlan());
+			  	 voucherDto.setCodRuc(v.getCodRuc());
+			  	 voucherDto.setNomPlan(v.getNomPlan());
+			  	 voucherDto.setCodTipoDoc(v.getCodTipoDoc());
+			  	 voucherDto.setCodUnidadNegocio(v.getCodUnidadNegocio());
+			  	 if (v.getAbreNomMoneda().compareTo("S")==0) {
+			  		 if (v.getDebe()!=null) {
+					  	 voucherDto.setDebe(v.getDebe());
+					 }else {
+					     voucherDto.setDebe(new BigDecimal("0.00"));
+					 
+					 }
+				  	 if (v.getHaber()!=null) {
+					  	 voucherDto.setHaber(v.getHaber());
+					}else {
+						  voucherDto.setHaber(new BigDecimal("0.00"));
+					}
+				}else {
+					//dolares
+					 if (v.getDebe()!=null) {
+					  	 voucherDto.setDebe(v.getEquivalente());
+					 }else {
+					     voucherDto.setDebe(new BigDecimal("0.00"));
+					 
+					 }
+				  	 if (v.getHaber()!=null) {
+					  	 voucherDto.setHaber(v.getEquivalente());
+					}else {
+						  voucherDto.setHaber(new BigDecimal("0.00"));
+					}
+				}
+			  	 
+			  	
+			  //	 voucherDto.setEquivalente(v.getEquivalente());
+			  	 voucherDto.setEstadoVoucher(v.getEstadoVoucher());
+			  	 if (v.getFechaEmision()!=null) {
+				  	 voucherDto.setFechaEmision(funciones.getFechaToString(v.getFechaEmision()));
+				 }
+			  	 if (v.getFechaVencimiento()!=null) {
+				  	 voucherDto.setFechaVencimiento(funciones.getFechaToString(v.getFechaVencimiento()));
+				 }
+			  	 voucherDto.setGlosario(v.getGlosario());
+		
+			  	 voucherDto.setRazonSocial(v.getRazonSocial());
+			  	 if (v.getSerieNumero()!=null) {
+				  	 voucherDto.setSerie(funciones.getSerie(v.getSerieNumero()));
+				  	 voucherDto.setNumeroComprobante(funciones.getNumero(v.getSerieNumero()));
+				}else {
+					voucherDto.setSerie(null);
+					voucherDto.setNumeroComprobante(null);
+				}
+			  	 voucherDto.setTipoCambio(v.getTipoCambio());
+				 list.add(voucherDto);
+
+		 });
+		return list;
+	}
+	
+	
+	
+	//Metodo para calcular los montos totales del asiento
+	public LEDiarioVoucherDto getCalcularMontos(LEDiarioVoucherDto voucherDto) {
+		//LEDiarioVoucherDto voucherDto = new LEDiarioVoucherDto();
+
+		voucherDto.setDebe(new BigDecimal("0"));
+		voucherDto.setHaber(new BigDecimal("0"));
+
+		voucherDto.getLstLeDiarioVucherDetDto().forEach(v->{  
+					 voucherDto.setDebe(funciones.getRedondear(voucherDto.getDebe().add(v.getDebe()), 2));
+					 voucherDto.setHaber(funciones.getRedondear(voucherDto.getHaber().add(v.getHaber()),2));
+				 //   if (voucherDto.getDebe().compareTo(new BigDecimal("0.00"))!=0 && voucherDto.getDebe().compareTo(new BigDecimal("0"))!=0 && voucherDto.getDebe()!=null) {
+		 });
+		
+		return voucherDto;
+	}
+	
+	
+	
+	@Override
+	@Transactional
+	public LEDiarioDto getCalcularMontosTotalesSunat(LEDiarioDto diario, Integer decimales) {
+	 
+		diario.getListDiarioPorOrigenDao().forEach(diarioOrigen->{ 
+			diarioOrigen.getListLeDiarioVoucherDto().forEach(diarioVoucher->{ 
+				   diario.setTotalDebe(funciones.sumarRedondear(diarioVoucher.getDebe(),diario.getTotalDebe(),decimales));
+				   diario.setTotalHaber(funciones.sumarRedondear(diarioVoucher.getHaber(), diario.getTotalHaber(), decimales));
+			});
+		});
+		return diario;
+	}
+	
+
+}

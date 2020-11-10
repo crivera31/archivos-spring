@@ -1,0 +1,99 @@
+package com.springboot.servicios.zuul.api.gateway.oauth;
+
+import java.util.Arrays;
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+@RefreshScope
+@Configuration
+@EnableResourceServer
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
+
+	@Override
+	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+		resources.tokenStore(tokenStore());
+	}
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/api/security/oauth/token").permitAll()
+		.antMatchers(HttpMethod.GET,"/api/usuarios/usuarios").permitAll()
+		.antMatchers("/api/usuarios/actuator/**").permitAll()
+		.antMatchers("/actuator/**").permitAll()
+		.antMatchers(HttpMethod.GET,"/api/usuarios/usuarios/status").permitAll() 
+		.antMatchers(HttpMethod.DELETE,"/api/usuarios/usuarios/**").hasRole("ADMIN")
+		.antMatchers(HttpMethod.POST,"/api/administracion/proveedor/agregar-clientes").hasAnyRole("ADMIN","ORIANA_CONT","COVESA_CONT","VILLASOL_CONT","CONSTRUCTORES_CONT")
+		.antMatchers(HttpMethod.GET,"/api/administracion/**").hasAnyRole("ADMIN","ORIANA_CONT","COVESA_CONT","VILLASOL_CONT","CONSTRUCTORES_CONT")
+		.antMatchers(HttpMethod.POST,"/api/administracion/**").hasRole("ADMIN")
+		.antMatchers(HttpMethod.PUT,"/api/administracion/**").hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET,"/api/sistema-empresa/contabilidad/**").hasAnyRole("COVESA_CONT","ADMIN")
+		.antMatchers(HttpMethod.POST,"/api/sistema-empresa/contabilidad/**").hasAnyRole("COVESA_CONT","ADMIN")
+		.antMatchers(HttpMethod.PUT,"/api/sistema-empresa/contabilidad/**").hasAnyRole("COVESA_CONT","ADMIN")
+		.antMatchers(HttpMethod.GET,"/api/sistema-oriana/contabilidad/**").hasAnyRole("ORIANA_CONT","ADMIN")
+		.antMatchers(HttpMethod.POST,"/api/sistema-oriana/contabilidad/**").hasAnyRole("ORIANA_CONT","ADMIN")
+		.antMatchers(HttpMethod.PUT,"/api/sistema-oriana/contabilidad/**").hasAnyRole("ORIANA_CONT","ADMIN")
+		.antMatchers(HttpMethod.GET,"/api/sistema-villasol/contabilidad/**").hasAnyRole("VILLASOL_CONT","ADMIN")
+		.antMatchers(HttpMethod.POST,"/api/sistema-villasol/contabilidad/**").hasAnyRole("VILLASOL_CONT","ADMIN")
+		.antMatchers(HttpMethod.PUT,"/api/sistema-villasol/contabilidad/**").hasAnyRole("VILLASOL_CONT","ADMIN")
+		.antMatchers(HttpMethod.GET,"/api/sistema-constructores/contabilidad/**").hasAnyRole("CONSTRUCTORES_CONT","ADMIN")
+		.antMatchers(HttpMethod.POST,"/api/sistema-constructores/contabilidad/**").hasAnyRole("CONSTRUCTORES_CONT","ADMIN")
+		.antMatchers(HttpMethod.PUT,"/api/sistema-constructores/contabilidad/**").hasAnyRole("CONSTRUCTORES_CONT","ADMIN")
+		.antMatchers(HttpMethod.GET,"/api/sistema-empresa/helpdesk/**").hasAnyRole("COVESA_HDS","ADMIN")
+		.antMatchers(HttpMethod.POST,"/api/sistema-empresa/helpdesk/**").hasAnyRole("COVESA_HDS","ADMIN")
+		.antMatchers(HttpMethod.PUT,"/api/sistema-empresa/helpdesk/**").hasAnyRole("COVESA_HDS","ADMIN")
+		.anyRequest().authenticated()
+		.and().cors().configurationSource(corsConfigurationSource());
+	}
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		//corsConfig.setAllowedOrigins(Arrays.asList("*"));
+		corsConfig.setAllowedOrigins(Arrays.asList("*"));
+		//corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		//corsConfig.setAllowedOrigins(Arrays.asList("http://192.168.1.110:4200"));
+		//corsConfig.setAllowedOrigins(Arrays.asList("http://192.168.1.122:4200"));
+		corsConfig.setAllowedMethods(Arrays.asList("POST","GET","PUT","DELETE","OPTIONS"));
+		corsConfig.setAllowCredentials(true);
+		corsConfig.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
+		//corsConfig.setExposedHeaders(Arrays.asList("Authorization","Content-Type"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
+	}
+
+	//Configuracion adicional si nuestro sistema esta en otro dominio
+	@Bean
+	public FilterRegistrationBean<CorsFilter> corsFilter(){
+		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(corsConfigurationSource()));
+		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		return bean;
+	}
+	
+	@Bean
+	public JwtTokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
+	}
+
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
+		tokenConverter.setSigningKey(JwtConfig.RSA_PRIVATE);
+		tokenConverter.setVerifierKey(JwtConfig.RSA_PUBLICA);
+		return tokenConverter;
+	}
+}

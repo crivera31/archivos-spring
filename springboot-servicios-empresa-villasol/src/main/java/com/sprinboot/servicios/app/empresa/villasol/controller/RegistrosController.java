@@ -1,0 +1,228 @@
+package com.sprinboot.servicios.app.empresa.villasol.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sprinboot.servicios.app.empresa.villasol.dto.CancelacionDocDto;
+import com.sprinboot.servicios.app.empresa.villasol.dto.FiltroIgvDto;
+import com.sprinboot.servicios.app.empresa.villasol.service.AsientoServiceInterface;
+import com.sprinboot.servicios.app.empresa.villasol.service.RegistroDocumentosServiceInterface;
+import com.sprinboot.servicios.app.empresa.villasol.service.RegistroLibrosServiceInterface;
+import com.sprinboot.servicios.app.empresa.villasol.service.VoucherServiceInterface;
+import com.sprinboot.servicios.empresa.commons.entity.RegistroDocumentos;
+import com.sprinboot.servicios.empresa.commons.entity.RegistroLibros;
+
+@RestController
+@RequestMapping("registros")
+public class RegistrosController {
+	
+	@Autowired
+	AsientoServiceInterface asientoServiceInterface;
+	
+	@Autowired
+	VoucherServiceInterface voucherServiceInterface;
+	
+	@Autowired
+	RegistroDocumentosServiceInterface registroDocumentosServiceInterface;
+	
+	@Autowired
+    RegistroLibrosServiceInterface registroLibrosServiceInterface ;
+	
+
+	
+	@GetMapping(value="/listar/{codigo}/{plan}/{anio}")
+    public ResponseEntity<?> listRegistroDoc(@PathVariable String codigo,@PathVariable String plan,@PathVariable String anio) {
+		Map<String, Object> response = new HashMap<>();
+		List<CancelacionDocDto> listCancelacion =null;
+		
+		
+		
+         if (!registroDocumentosServiceInterface.calculoPrevio(codigo,plan,anio)) {
+        	 System.out.println("FALSO");
+        	 response.put("mensaje","El cod ".concat(codigo.toString().concat(" se busco y hubo un error al calcular sus facturas sin cancelacion")));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+		}		  
+         System.out.println("TRUE");
+		try {
+				listCancelacion = registroDocumentosServiceInterface.listarByPersona(codigo, plan, anio);
+				 System.out.println("LISTAR BY PERSONA");
+
+	            	
+			} catch (DataAccessException e) {
+				response.put("mensaje","Error en el Servidor DataAccesException");
+				response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));		
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		   
+		   if (listCancelacion==null) {
+				 System.out.println("LISTAR NO TIENE REGISTROS");
+
+			   response.put("mensaje","El cod ".concat(codigo.toString().concat(" no tiene registros ")));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+			} 
+		
+			return new ResponseEntity<List<CancelacionDocDto>>(listCancelacion, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("/obtener-regcance") 
+	public ResponseEntity<?> createCancelacion(@Valid @RequestBody CancelacionDocDto cancelacionDocDto){
+	     Map<String, Object> response = new HashMap<>();
+		List<CancelacionDocDto> listCancelacion =null;
+
+		try {
+			listCancelacion = registroDocumentosServiceInterface.obtenerCancelacion(cancelacionDocDto);
+		}catch(DataAccessException e) {
+			response.put("mensaje","Error en el Servidor");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(listCancelacion.size()<1) {
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}else {
+			return new ResponseEntity<List<CancelacionDocDto>>(listCancelacion, HttpStatus.OK);
+
+		}
+		//response.put("mensaje","Se calcularon los registros de cancelacion");
+	}
+	
+	@PostMapping("/remove-obtener-regcance") 
+	public ResponseEntity<?> obtenerRemoveCAnce(@Valid @RequestBody CancelacionDocDto cancelacionDocDto){
+	     Map<String, Object> response = new HashMap<>();
+		List<CancelacionDocDto> listCancelacion =null;
+
+		try {
+			listCancelacion = registroDocumentosServiceInterface.obtenerCancelacionFull(cancelacionDocDto);
+		}catch(DataAccessException e) {
+			response.put("mensaje","Error en el Servidor");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(listCancelacion.size()<1) {
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}else {
+			return new ResponseEntity<List<CancelacionDocDto>>(listCancelacion, HttpStatus.OK);
+
+		}
+		//response.put("mensaje","Se calcularon los registros de cancelacion");
+	}
+	
+	
+	@PostMapping("/cancelar-doc") 
+	public ResponseEntity<?> createCancelacion(@Valid @RequestBody List<CancelacionDocDto> lstcancelacionDocDto){
+	     Map<String, Object> response = new HashMap<>();
+		 Boolean resu=false;
+
+		try {
+			resu = registroDocumentosServiceInterface.guardarCancelacion(lstcancelacionDocDto);
+		}catch(DataAccessException e) {
+			response.put("mensaje","Error en el Servidor");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(resu==false) {
+			response.put("mensaje","No hay nada en lista de cancelacion");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}else {
+			response.put("mensaje","Se cambio con exito");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+
+		}
+		//response.put("mensaje","Se calcularon los registros de cancelacion");
+	}
+	
+	@PostMapping("/obtener-registro-libro") 
+	public ResponseEntity<?> obtenerFiltroIgv(@Valid @RequestBody FiltroIgvDto filtroIgvDto){
+	     Map<String, Object> response = new HashMap<>();
+	     List<RegistroLibros> lstRegistroLibros = null;
+		//return new ResponseEntity<FiltroIgvDto>(filtroIgvDto, HttpStatus.OK);
+
+	     
+		try {
+		 lstRegistroLibros = registroLibrosServiceInterface.listarRegistroLibrosPorFiltro(filtroIgvDto);
+		}catch(DataAccessException e) {
+			response.put("mensaje","Error en el Servidor");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	     	 if (lstRegistroLibros.size()<1) {
+			   response.put("mensaje","no se encontro ningun registro");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		   	}else {
+		   		if (lstRegistroLibros.size()>1) {
+		   			String men = "";
+					 for (RegistroLibros registroLibros : lstRegistroLibros) {
+						men = "| ASIENTO : " +registroLibros.getVoucher().getAsiento().getNumAsiento() +  " -  MES : "+registroLibros.getVoucher().getAsiento().getCodMes() + " - AÑO : "+registroLibros.getVoucher().getAsiento().getAnio() +  " - CUENTA : "+registroLibros.getVoucher().getCodPlan() + " |   ";
+					}
+					 response.put("mensaje","LOS DATOS DEL VOUCHER SE REPITEN EN EL LIBRO CON CODIGO '00', EN LOS SIGUIENTES ASIENTOS : "+men);
+					 //406
+						return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+				}else {
+					 RegistroLibros registroLibro = lstRegistroLibros.get(0);	
+				     registroLibro.getVoucher().setAsiento(null);
+				     registroLibro.getVoucher().setRegistroLibro(null);
+				     registroLibro.getVoucher().setVoucherRef(null);
+				     registroLibro.getVoucher().setRegistroDocumento(null);
+					return new ResponseEntity<RegistroLibros>(registroLibro, HttpStatus.OK);
+				}
+					
+			  
+
+			}
+		
+		
+	}
+	
+	
+	@PostMapping("/remove-cancelar-doc") 
+	public ResponseEntity<?> cancelarCancelacion(@Valid @RequestBody List<CancelacionDocDto> lstcancelacionDocDto){
+	     Map<String, Object> response = new HashMap<>();
+		 Boolean resu=false;
+
+		try {
+			resu = registroDocumentosServiceInterface.guardarCancelacionRemove(lstcancelacionDocDto);
+		}catch(DataAccessException e) {
+			response.put("mensaje","Error en el Servidor");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(resu==false) {
+			response.put("mensaje","No hay nada en lista de cancelacion");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}else {
+			response.put("mensaje","Se cambio con exito");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+
+		}
+		//response.put("mensaje","Se calcularon los registros de cancelacion");
+	}
+	
+	
+   }
+
+
+
+
+
+
+

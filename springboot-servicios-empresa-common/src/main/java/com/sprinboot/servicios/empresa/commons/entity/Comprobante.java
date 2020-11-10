@@ -1,0 +1,295 @@
+package com.sprinboot.servicios.empresa.commons.entity;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Table(name="comprobante")
+public class Comprobante implements Serializable{
+	
+	private static final long serialVersionUID=1L;
+	
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;	
+	
+	@Column(name="num_comprobante")
+	private Integer numComprobante;
+	
+	
+	@Column(name="ruc",length = 13)
+	private String ruc;
+	
+	@Column(name="son",length = 2000)
+	private String son;
+	
+	@Column(name="documento",length = 200)
+	private String documento;
+	
+	@Column(name="serie_numero",length = 100)
+	private String serieNumero;
+	
+	@Column(name="detalle",length = 1000)
+	private String detalle;
+	
+	@Column(name="fecha_doc")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
+	private Date fechaDoc;
+	
+	@Column(name="fecha_comprobante")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
+	private Date fechaComprobante;
+	
+	@Column(name="total",precision=19,scale=7)
+	private BigDecimal total;
+	
+	@Column(name="descuento",precision=19,scale=7)
+	private BigDecimal descuento;
+	
+	@Column(name="neto_pagar",precision=19,scale=7)
+	private BigDecimal netoPagar;
+		
+	@Column(name="create_at")
+	@Temporal(TemporalType.DATE)
+	private Date createAt;
+	
+	@Column(name="forma_pago",length = 200)
+	private String formaPago;
+
+	@Column(name="anio")
+	private String anio;
+	
+	@Column(name="unidad_negocio_id")
+	private Integer unidadNegocioId;
+	
+	@Column(name="num_cheque",length = 200)
+	private String numCheque;
+	
+	@Column(name="cuenta_banco",length = 400)
+	private String cuentaBanco;
+	
+	@Column(name="username")
+	private String username;
+	
+	@Column(name="estado_comprobante")
+	private Integer estadoComprobante;
+	
+	@Column(name="tipo_comprobante")
+	private String tipo_comprobante;
+	
+	
+	@OneToMany(mappedBy="comprobante",fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH} )
+	private List<ComprobanteDet> lstComprobanteDet;
+
+	
+	 public void prePersist()  {
+    	createAt = new Date();
+    }
+	
+	public Integer getUnidadNegocioId() {
+		return unidadNegocioId;
+	}
+
+	public void setUnidadNegocioId(Integer unidadNegocioId) {
+		this.unidadNegocioId = unidadNegocioId;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getNumComprobante() {
+		return numComprobante;
+	}
+
+	public void setNumComprobante(Integer numComprobante) {
+		this.numComprobante = numComprobante;
+	}
+
+	
+
+	public Date getFechaComprobante() {
+		return fechaComprobante;
+	}
+
+	public void setFechaComprobante(Date fechaComprobante) {
+		this.fechaComprobante = fechaComprobante;
+	}
+
+	public String getRuc() {
+		return ruc;
+	}
+
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+
+	
+	public String getSon() {
+		return son;
+	}
+
+	public void setSon(String son) {
+		this.son = son;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	public String getSerieNumero() {
+		return serieNumero;
+	}
+
+	public void setSerieNumero(String serieNumero) {
+		this.serieNumero = serieNumero;
+	}
+
+	public String getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
+	}
+
+	public Date getFechaDoc() {
+		return fechaDoc;
+	}
+
+	public void setFechaDoc(Date fechaDoc) {
+		this.fechaDoc = fechaDoc;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
+
+	public BigDecimal getNetoPagar() {
+		return netoPagar;
+	}
+
+	public void setNetoPagar(BigDecimal netoPagar) {
+		this.netoPagar = netoPagar;
+	}
+
+	public Date getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
+	}
+
+	public String getFormaPago() {
+		return formaPago;
+	}
+
+	public void setFormaPago(String formaPago) {
+		this.formaPago = formaPago;
+	}
+
+	public String getAnio() {
+		return anio;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+
+
+	public String getNumCheque() {
+		return numCheque;
+	}
+
+	public void setNumCheque(String numCheque) {
+		this.numCheque = numCheque;
+	}
+
+	public String getCuentaBanco() {
+		return cuentaBanco;
+	}
+
+	public void setCuentaBanco(String cuentaBanco) {
+		this.cuentaBanco = cuentaBanco;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Integer getEstadoComprobante() {
+		return estadoComprobante;
+	}
+
+	public void setEstadoComprobante(Integer estadoComprobante) {
+		this.estadoComprobante = estadoComprobante;
+	}
+
+	public String getTipo_comprobante() {
+		return tipo_comprobante;
+	}
+
+	public void setTipo_comprobante(String tipo_comprobante) {
+		this.tipo_comprobante = tipo_comprobante;
+	}
+
+	public List<ComprobanteDet> getLstComprobanteDet() {
+		return lstComprobanteDet;
+	}
+
+	public void setLstComprobanteDet(List<ComprobanteDet> lstComprobanteDet) {
+		this.lstComprobanteDet = lstComprobanteDet;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+  
+
+	
+
+}

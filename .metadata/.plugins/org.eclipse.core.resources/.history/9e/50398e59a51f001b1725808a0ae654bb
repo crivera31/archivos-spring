@@ -1,0 +1,723 @@
+package com.sprinboot.servicios.app.oriplan.sis.controller;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import com.sprinboot.servicios.app.oriplan.sis.jsons.PlanillaRest;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.sprinboot.servicios.app.oriplan.sis.dto.PlanillaDto;
+import com.sprinboot.servicios.app.oriplan.sis.funciones.Funciones;
+import com.sprinboot.servicios.app.oriplan.sis.funciones.JasperSpring;
+import com.sprinboot.servicios.app.oriplan.sis.service.DatosGeneralesServiceInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.PlanillaServiceInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.SctrServiceInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.SistemaPensionesInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.TablaSalarialInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.TareoCabServiceInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.TasaPensionesServiceInterface;
+import com.sprinboot.servicios.app.oriplan.sis.service.TrabajadoresServiceInterface;
+import com.sprinboot.servicios.oriplan.commons.entity.DatosGenerales;
+import com.sprinboot.servicios.oriplan.commons.entity.PlanillaExcel;
+import com.sprinboot.servicios.oriplan.commons.entity.TablaSalarial;
+import com.sprinboot.servicios.oriplan.commons.entity.TareoCab;
+import com.sprinboot.servicios.oriplan.commons.entity.TareoDet;
+import com.sprinboot.servicios.oriplan.commons.entity.TasasPensiones;
+import com.sprinboot.servicios.oriplan.commons.entity.Trabajadores;
+
+import javax.validation.Valid;
+
+@RestController
+@RequestMapping("planilla")
+public class PlanillaController {
+
+    @Autowired
+    PlanillaServiceInterface service;
+
+    @Autowired
+    private TrabajadoresServiceInterface trabajadoresService;
+
+    @Autowired
+    private TablaSalarialInterface tablaService;
+
+    @Autowired
+    private TasaPensionesServiceInterface tasaPensiones;
+
+    @Autowired
+    private SctrServiceInterface sctrService;
+
+    @Autowired
+    private DatosGeneralesServiceInterface datosService;
+
+    @Autowired
+    private TareoCabServiceInterface tareoService;
+
+    @Autowired
+    private SistemaPensionesInterface sistemaPensionesInterface;
+
+    @Autowired
+    Funciones funciones;
+
+    @Autowired
+    JasperSpring jasperSpring;
+
+    @GetMapping(value = "/listar-afp/{anio}/{mes}")
+    public ResponseEntity<?> listarAfp(@PathVariable String anio, @PathVariable String mes) {
+        List<PlanillaRest> lstPlanillaRest = new ArrayList<>();
+        Map<String, Object> response = new HashMap<>();
+        try {
+            lstPlanillaRest = service.listarPlanillaAfp(anio, mes);
+            if (lstPlanillaRest.size() < 0) {
+                response.put("mensaje", "No hay datos en el año: " + anio + ", mes: " + mes);
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(lstPlanillaRest);
+    }
+
+    @GetMapping(value = "/listar")
+    public ResponseEntity<?> listar() {
+        List<PlanillaExcel> lstLibros = new ArrayList<>();
+        try {
+            lstLibros = service.getAll();
+
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(lstLibros);
+    }
+
+    @GetMapping(value = "/buscar-mes/{idDatosGenerales}/{anio}/{mes}")
+    public ResponseEntity<?> listarplanilla(@PathVariable Integer idDatosGenerales, @PathVariable String anio,
+                                            @PathVariable String mes) {
+        List<PlanillaExcel> lstLibros = new ArrayList<>();
+        DatosGenerales d = datosService.findByIdCommon(idDatosGenerales);
+        try {
+            lstLibros = service.getmes(mes, anio, d.getNomObra());
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(lstLibros);
+    }
+
+    @GetMapping(value = "/buscar-filtro/{dni}/{idDatosGenerales}/{nomSemana}")
+    public ResponseEntity<?> listarplanilla(@PathVariable String dni, @PathVariable Integer idDatosGenerales,
+                                            @PathVariable String nomSemana) {
+        List<PlanillaExcel> lstLibros = new ArrayList<>();
+        DatosGenerales d = datosService.findByIdCommon(idDatosGenerales);
+        try {
+            lstLibros = service.getPlaniillita(nomSemana.trim(), d.getNomObra().trim());
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(lstLibros);
+    }
+
+    @GetMapping(value = "/listar-planilla/{idDatosGenerales}/{nomSemana}")
+    public ResponseEntity<?> listarplanillaPorDni(@PathVariable Integer idDatosGenerales,
+                                                  @PathVariable String nomSemana) {
+        List<PlanillaExcel> lstLibros = new ArrayList<>();
+        DatosGenerales d = datosService.findByIdCommon(idDatosGenerales);
+        try {
+            lstLibros = service.getPlaniillita(nomSemana.trim(), d.getNomObra().trim());
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(lstLibros);
+    }
+
+    @PutMapping(value = "/editar/{idDatosGenerales}/{nomSemana}/{dni}/{numHijos}/{condicionTrabajo}/{adelanto}/{declaracion}")
+    public ResponseEntity<?> editarPlanilla(@Valid @PathVariable Integer idDatosGenerales, @PathVariable String nomSemana, @PathVariable String dni,
+                                            @PathVariable int numHijos, @PathVariable BigDecimal condicionTrabajo, @PathVariable BigDecimal adelanto,
+                                            @PathVariable String declaracion) {
+        //acá me quedé
+        PlanillaExcel planillaExcel = new PlanillaExcel();
+        try {
+            planillaExcel = service.editar(idDatosGenerales, nomSemana, dni, numHijos, condicionTrabajo, adelanto, declaracion);
+        } catch (Exception e) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(planillaExcel);
+    }
+
+    @GetMapping(value = "/generar-planilla/{nomSemanaPeriodo}/{mes}/{idObraDatosGenerales}/{anio}")
+    public ResponseEntity<?> agregar(@PathVariable String nomSemanaPeriodo, @PathVariable String mes,
+                                     @PathVariable Integer idObraDatosGenerales, @PathVariable String anio) throws ParseException {
+
+        Map<String, Object> response = new HashMap<>();
+        List<PlanillaDto> lista = new ArrayList<PlanillaDto>();
+        DatosGenerales datosg = new DatosGenerales();
+        TareoCab tareo = new TareoCab();
+        try {
+            datosg = datosService.findByIdCommon(idObraDatosGenerales);
+        } catch (Exception e) {
+            response.put("mensaje", "Error al traer datos generales");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+            tareo = tareoService.buscar(nomSemanaPeriodo, idObraDatosGenerales);
+            if (tareo == null) {
+                response.put("mensaje", "No se encontro un tareo con la semana " + nomSemanaPeriodo);
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+            }
+
+        } catch (Exception e) {
+            response.put("mensaje", "Error al buscar tareo de la semana");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+
+            List<Trabajadores> trabajadores = trabajadoresService.listarTrabajadoresActivos();
+            if (trabajadores.size() > 0) {
+                for (Trabajadores trabajador : trabajadores) {
+
+                    //String codigo = codigoRetoo(trabajador.getNombresCompletos());
+                    String codigo = "";
+                    TareoDet det = new TareoDet();
+                    try {
+                        det = service.buscarEnTareo(trabajador.getDni(), tareo);
+                    } catch (Exception e) {
+                        response.put("mensaje", "Error al traer tareo detalle");
+                        response.put("error", e.getMessage());
+                        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+
+                    if (det == null) {
+                        // response.put("error","el trabajador "+trabajador.getNombresCompletos() + "No
+                        // tiene tareo");
+                        // return new ResponseEntity<Map<String, Object>>(response,
+                        // HttpStatus.NOT_ACCEPTABLE);
+                    } else {
+                        PlanillaDto n = new PlanillaDto();
+
+                        n = service.insertarPlanilla(codigo, trabajador.getDni().trim(),
+                                trabajador.getNombresCompletos(), trabajador.getCargoOcupacion(),
+                                "Régimen de Construcción Civil", datosg.getNomObra(), mes,
+                                trabajador.getPlanilla() == 1 ? "Si" : "No", "", trabajador.getFechaIngreso(),
+                                trabajador.getFecha_egreso(), tareo.getPeriodo_semanal(), tareo.getNomPeriodoSemanal(),
+                                sistemaPensionesInterface.buscarNombre(trabajador.getSistemaPensiones().toString())
+                                        .getNombre(),
+                                trabajador.getCussp(), trabajador.getTipoComision(), "Privado",
+                                trabajador.getNumhijos(), det, trabajador.getSistemaPensiones().toString(),
+                                idObraDatosGenerales, anio, trabajador.getCondicionTrabajo(), trabajador);
+                        lista.add(n);
+                    }
+
+                }
+            } else {
+                response.put("mensaje", "LA LISTA DE TRABAJADORES ES NULL");
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+            }
+
+        } catch (Exception e) {
+            response.put("mensaje", "Error al actualizar en el servidor");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            // return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("datos", lista);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/agregar")
+    public ResponseEntity<?> agregar(@RequestBody List<PlanillaDto> listapla) {
+
+        Map<String, Object> response = new HashMap<>();
+        List<PlanillaExcel> lista = new ArrayList<PlanillaExcel>();
+        ModelMapper modelMapper = new ModelMapper();
+        try {
+
+            if (listapla.size() == 0) {
+                response.put("datos", "La lista esta vacia");
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+            } else {
+                for (PlanillaDto planillaDto : listapla) {
+                    if (!service.buscar(planillaDto.getDni().trim(), planillaDto.getPeriodoSemanal().trim(),
+                            planillaDto.getObra().trim())) {
+                        PlanillaExcel planilla = new PlanillaExcel();
+                        planilla = modelMapper.map(planillaDto, PlanillaExcel.class);
+                        planilla.setEnabled(1);
+                        lista.add(planilla);
+                    }
+                }
+                service.guardar(lista);
+            }
+
+        } catch (Exception e) {
+            response.put("mensaje", "Error al guardar planilla en el servidor");
+            response.put("error", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            // return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("datos", lista);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+
+
+    public String codigoRetoo(String name) {
+        name = name.trim();
+        String separador = Pattern.quote(" ");
+        String[] parts = name.split(separador);
+//		String dd = parts[0]; // enteros
+        String codiguito = "";
+        for (int i = 0; i < parts.length; i++) {
+            codiguito = codiguito + parts[i].charAt(0);
+        }
+        return codiguito;
+    }
+
+    @GetMapping(value = "/pdf/{idplanilla}/{iddatosgenerales}")
+    public ResponseEntity<?> pdfboleta(@PathVariable Integer idplanilla, @PathVariable Integer iddatosgenerales) {
+        Map<String, Object> response = new HashMap<>();
+        PlanillaExcel planilla = new PlanillaExcel();
+        DatosGenerales dat = new DatosGenerales();
+
+        try {
+            dat = datosService.findByIdCommon(iddatosgenerales);
+
+            planilla = service.findByIdCommon(idplanilla);
+
+        } catch (DataAccessException e) {
+            System.out.println("ERROR AL LLAMAR IDS");
+            response.put("mensaje", "Error en el Servidor DataAccesException");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("empresa", dat.getEmpresa());
+        parameters.put("rucEmpresa", dat.getRucEmpresa());
+        parameters.put("direccion_empresa", dat.getDireccion_empresa());
+        parameters.put("consorcio", dat.getConsorcio());
+        try {
+            parameters.put("jornalBasico", tablaService.porCategoria(planilla.getOcupacion()).getJornalBasico());
+
+        } catch (Exception e) {
+            System.out.println("errorjornalBasico");
+        }
+        try {
+            parameters.put("dominical", tablaService.porCategoria(planilla.getOcupacion()).getDominical());
+
+        } catch (Exception e) {
+            System.out.println("errordominical");
+        }
+        try {
+            parameters.put("buc", tablaService.porCategoria(planilla.getOcupacion()).getBuc());
+
+        } catch (Exception e) {
+            System.out.println("errorbuc");
+        }
+        try {
+            parameters.put("vacaciones", tablaService.porCategoria(planilla.getOcupacion()).getVacaciones());
+
+        } catch (Exception e) {
+            System.out.println("errorvacaciones");
+        }
+        try {
+            parameters.put("feriadosDescansados",
+                    tablaService.porCategoria(planilla.getOcupacion()).getFeriadosDescansados());
+
+        } catch (Exception e) {
+            System.out.println("errorferiadosDescansados");
+        }
+        try {
+            parameters.put("feriadosTrabajados", calculoFeriadosTrabajadosBoleta(planilla));
+
+        } catch (Exception e) {
+            System.out.println("errorferiadosTrabajados");
+        }
+        try {
+            parameters.put("horas_extras_sesenta",
+                    tablaService.porCategoria(planilla.getOcupacion()).getHoras_extras_sesenta());
+
+        } catch (Exception e) {
+            System.out.println("errorhoras_extras_sesenta");
+        }
+        try {
+            parameters.put("horasExtrasCien", tablaService.porCategoria(planilla.getOcupacion()).getHorasExtrasCien());
+
+        } catch (Exception e) {
+            System.out.println("errorhorasExtrasCien");
+        }
+        try {
+            parameters.put("gratificacion", grati(planilla));
+
+        } catch (Exception e) {
+            System.out.println("errorgratificacion");
+        }
+        try {
+            parameters.put("bonificacion", funciones.multiRedondear(grati(planilla), new BigDecimal("0.09"), 6));
+
+        } catch (Exception e) {
+            System.out.println("errorbonificacion");
+        }
+        try {
+            parameters.put("movilidad", tablaService.porCategoria(planilla.getOcupacion()).getMovilidad());
+
+        } catch (Exception e) {
+            System.out.println("errormovilidad");
+        }
+
+        try {
+            parameters.put("cts", tablaService.porCategoria(planilla.getOcupacion()).getCts());
+
+        } catch (Exception e) {
+            System.out.println("errorcts");
+        }
+
+        try {
+            parameters.put("asignacionEscolar",
+                    tablaService.porCategoria(planilla.getOcupacion()).getAsignacionEscolar());
+
+        } catch (Exception e) {
+            System.out.println("errorasignacionEscolar");
+        }
+
+        try {
+            parameters.put("contactoAgua", tablaService.porCategoria(planilla.getOcupacion()).getContactoAgua());
+
+        } catch (Exception e) {
+            System.out.println("errorcontactoAgua");
+        }
+
+        try {
+            parameters.put("aguasHervidas", tablaService.porCategoria(planilla.getOcupacion()).getAguasHervidas());
+
+        } catch (Exception e) {
+            System.out.println("erroraguasHervidas");
+        }
+
+        try {
+            parameters.put("bonificacionAltura",
+                    tablaService.porCategoria(planilla.getOcupacion()).getBonificacionAltura());
+
+        } catch (Exception e) {
+            System.out.println("errorbonificacionAltura");
+        }
+
+        try {
+            parameters.put("bonificacionAltitud",
+                    tablaService.porCategoria(planilla.getOcupacion()).getBonificacionAltitud());
+
+        } catch (Exception e) {
+            System.out.println("errorbonificacionAltitud");
+        }
+        try {
+            parameters.put("horarioNocturno", tablaService.porCategoria(planilla.getOcupacion()).getHorarioNocturno());
+
+        } catch (Exception e) {
+            System.out.println("errorhorarioNocturno");
+        }
+        try {
+            parameters.put("descansoMedico", tablaService.porCategoria(planilla.getOcupacion()).getDescansoMedico());
+
+        } catch (Exception e) {
+            System.out.println("errordescansoMedico");
+        }
+        try {
+            parameters.put("gratiDias", funciones.dividirRedondear(planilla.getGratificacionCal(), grati(planilla), 6));
+
+        } catch (Exception e) {
+            System.out.println("errorgratiDias");
+        }
+        try {
+            parameters.put("boniDias", funciones.dividirRedondear(planilla.getBonifExtraTemporalCal(),
+                    funciones.multiRedondear(grati(planilla), new BigDecimal("0.09"), 6), 6));
+
+        } catch (Exception e) {
+            System.out.println("errorboniDias");
+        }
+        try {
+            parameters.put("dias_contacto_agua", funciones.dividirRedondear(planilla.getContactoAguaCal(),
+                    tablaService.porCategoria(planilla.getOcupacion()).getContactoAgua(), 6));
+
+        } catch (Exception e) {
+            System.out.println("errordias_contacto_agua");
+        }
+        try {
+            parameters.put("dias_aguas_servidas", funciones.dividirRedondear(planilla.getAguasServidasCal(),
+                    tablaService.porCategoria(planilla.getOcupacion()).getAguasHervidas(), 6));
+
+        } catch (Exception e) {
+            System.out.println("errordias_aguas_servidas");
+        }
+        try {
+            parameters.put("dias_altura", funciones.dividirRedondear(planilla.getBonificacionAlturaCal(),
+                    tablaService.porCategoria(planilla.getOcupacion()).getBonificacionAltura(), 6));
+
+        } catch (Exception e) {
+            System.out.println("errordias_altura");
+        }
+        try {
+            parameters.put("dias_altitud", funciones.dividirRedondear(planilla.getBonificacionAltitudCal(),
+                    tablaService.porCategoria(planilla.getOcupacion()).getBonificacionAltitud(), 6));
+
+        } catch (Exception e) {
+            System.out.println("errordias_altitud");
+        }
+        try {
+            parameters.put("dias_turno_noche", funciones.dividirRedondear(planilla.getTurnoNocheCal(),
+                    tablaService.porCategoria(planilla.getOcupacion()).getHorarioNocturno(), 6));
+
+        } catch (Exception e) {
+            System.out.println("errordias_turno_noche");
+        }
+        try {
+            parameters.put("totalDescuentos",
+                    funciones.sumarRedondearTotalLibro(planilla.getOnp(), planilla.getComisionAfp(),
+                            planilla.getPrimaAfp(), planilla.getAporteObligatorioAfp(), planilla.getAporteAdicAfp(),
+                            planilla.getConafovicer(), planilla.getCuotaSindical(), planilla.getOtrosDescuentos(), null,
+                            null, null, null, 7));
+        } catch (Exception e) {
+            System.out.println("errortotalDescuentos");
+        }
+        try {
+            parameters.put("netoPagar", funciones.restarRedondear(planilla.getNetoPagar(), planilla.getAdelanto(), 6));
+
+        } catch (Exception e) {
+            System.out.println("errornetoPagar");
+        }
+        try {
+            parameters.put("esalud_porcentaje", "9%");
+
+        } catch (Exception e) {
+            System.out.println("erroresalud_porcentaje");
+        }
+        try {
+            parameters.put("sctr_escalud_porcentaje", "");
+
+        } catch (Exception e) {
+            System.out.println("errorsctr_escalud_porcentaje");
+        }
+        try {
+            parameters.put("sctr_salud_eps_porcentaje",
+                    funciones.multiRedondear(sctrService.buscar().getSctrEssalud(), new BigDecimal("100"), 2) + "%");
+
+        } catch (Exception e) {
+            System.out.println("errorsctr_salud_eps_porcentaje");
+        }
+        try {
+            parameters.put("sctr_pensiones_porcentaje",
+                    funciones.multiRedondear(sctrService.buscar().getSctrPensiones(), new BigDecimal("100"), 2) + "%");
+
+        } catch (Exception e) {
+            System.out.println("errorsctr_pensiones_porcentaje");
+        }
+        try {
+            parameters.put("aporte_adicional_pensiones_porcentaje",
+                    funciones.multiRedondear(
+                            tasaPensiones.buscarNombre(planilla.getSistemaPensiones()).getAporteAdicionalAfp(),
+                            new BigDecimal("100"), 2) + "%");
+
+        } catch (Exception e) {
+            System.out.println("erroraporte_adicional_pensiones_porcentaje");
+        }
+        try {
+            parameters.put("mas_vida", dat.getImporte());
+
+        } catch (Exception e) {
+            System.out.println("errormas_vida");
+        }
+        try {
+            parameters.put("onp_porcentaje", calculoOnp(planilla.getSistemaPensiones()));
+
+        } catch (Exception e) {
+            System.out.println("erroronp_porcentaje");
+        }
+        try {
+            parameters.put("fondo_pensiones_porcentaje", calculoAporteObliAfp(planilla.getSistemaPensiones()));
+
+        } catch (Exception e) {
+            System.out.println("errorfondo_pensiones_porcentaje");
+        }
+        try {
+            parameters.put("aporte_adicional_pensiones_porcentaje",
+                    calculoAporteAdicAfp(planilla.getSistemaPensiones()));
+
+        } catch (Exception e) {
+            System.out.println("erroraporte_adicional_pensiones_porcentaje");
+        }
+        try {
+            parameters.put("comision_sobre_flujo_porcentaje",
+                    comisionAFPFlujo(planilla.getSistemaPensiones(), planilla.getTipoComision().trim()));
+
+        } catch (Exception e) {
+            System.out.println("errorcomision_sobre_flujo_porcentaje");
+        }
+        try {
+            parameters.put("comision_mixta_sobre_flujo_porcentaje",
+                    comisionAFPMixta(planilla.getSistemaPensiones(), planilla.getTipoComision().trim()));
+
+        } catch (Exception e) {
+            System.out.println("errorcomision_mixta_sobre_flujo_porcentaje");
+        }
+        try {
+            parameters.put("prima_seguro_porcentaje", afpPrima(planilla.getSistemaPensiones()));
+
+        } catch (Exception e) {
+            System.out.println("errorprima_seguro_porcentaje");
+        }
+        try {
+            parameters.put("conafovicer_porcentaje",
+                    // funciones.multiRedondear(tablaService.porCategoria(planilla.getOcupacion()).getConafovicer()
+                    // , new BigDecimal("1"), 0)+ "%"
+                    "2.00%");
+
+        } catch (Exception e) {
+            System.out.println("errorconafovicer_porcentaje");
+        }
+        try {
+            parameters.put("comision_sobre_flujo", comisionFlujo(planilla.getTipoComision().trim(), planilla));
+
+        } catch (Exception e) {
+            System.out.println("errorcomision_sobre_flujo");
+        }
+        try {
+            parameters.put("comision_mixta_sobre_flujo", comisionMixta(planilla.getTipoComision().trim(), planilla));
+
+        } catch (Exception e) {
+            System.out.println("errorcomision_mixta_sobre_flujo");
+        }
+
+        return jasperSpring.doReporte(new Object[]{planilla}, "planilla/boletaprueba2", parameters);
+        // return new ResponseEntity<RegistroComprasDto>(registroComprasDto,
+        // HttpStatus.OK);
+    }
+
+    public BigDecimal comisionFlujo(String tipoComision, PlanillaExcel p) {
+
+        if (tipoComision.compareTo("Comisión flujo") == 0) { //a
+            return p.getComisionAfp();
+        } else {
+            return new BigDecimal("0");
+        }
+
+    }
+
+    public BigDecimal comisionMixta(String tipoComision, PlanillaExcel p) {
+
+        if (tipoComision.compareTo("Comisión mixta") == 0) {
+            return p.getComisionAfp();
+        } else {
+            return new BigDecimal("0");
+        }
+
+    }
+
+    public BigDecimal calculoConafovicer(String ocupacion, BigDecimal diasTrabajados) {
+
+        TablaSalarial ts = tablaService.porCategoria(ocupacion);
+        return funciones.multiRedondear(ts.getConafovicer(), diasTrabajados, 7);
+
+    }
+
+    public String calculoAporteAdicAfp(String codigo) {
+        if (codigo.compareTo("ONP") == 0) {
+            return "";
+        } else {
+            TasasPensiones ts = tasaPensiones.buscarNombre(codigo);
+            return funciones.multiRedondear(ts.getAporteAdicionalAfp(), new BigDecimal("100"), 2) + "%";
+        }
+
+    }
+
+    public String calculoAporteObliAfp(String codigo) {
+        if (codigo.compareTo("ONP") == 0) {
+            return "";
+        } else {
+            TasasPensiones ts = tasaPensiones.buscarNombre(codigo);
+            return funciones.multiRedondear(ts.getAporte(), new BigDecimal("100"), 2) + "%";
+        }
+    }
+
+    public String afpPrima(String codigo) {
+        if (codigo.compareTo("ONP") == 0) {
+            return "";
+        } else {
+            TasasPensiones ts = tasaPensiones.buscarNombre(codigo);
+            return funciones.multiRedondear(ts.getPrima(), new BigDecimal("100"), 2) + "%";
+        }
+
+    }
+
+    public String comisionAFPMixta(String codigo, String tipoComision) {
+        if (codigo.compareTo("ONP") == 0) {
+            return "";
+        } else {
+            if (tipoComision.compareTo("Comisión mixta") == 0) {
+                TasasPensiones ts = tasaPensiones.buscarNombre(codigo);
+                return funciones.multiRedondear(ts.getComisionMixta(), new BigDecimal("100"), 2) + "%";
+            } else {
+                return "";
+            }
+
+        }
+
+    }
+
+    public String comisionAFPFlujo(String codigo, String tipoComision) {
+        if (codigo.compareTo("ONP") == 0) {
+            return "";
+        } else {
+            if (tipoComision.compareTo("Comisión flujo") == 0) {//a
+                TasasPensiones ts = tasaPensiones.buscarNombre(codigo);
+                return funciones.multiRedondear(ts.getComision(), new BigDecimal("100"), 2) + "%";
+            } else {
+                return "";
+            }
+
+        }
+
+    }
+
+    public String calculoOnp(String codigo) {
+        if (codigo.compareTo("ONP") == 0) {
+            TasasPensiones ts = tasaPensiones.buscarNombre(codigo);
+            return funciones.multiRedondear(ts.getTotal(), new BigDecimal("100"), 2) + "%";
+        } else {
+            return "";
+        }
+
+    }
+
+    public BigDecimal grati(PlanillaExcel p) {
+        if (p.getTipoGrati().compareTo("Patrias") == 0) {
+            return tablaService.porCategoria(p.getOcupacion()).getFiestasPatrias();
+        } else {
+            return tablaService.porCategoria(p.getOcupacion()).getFiestas_navidenas();
+        }
+
+    }
+
+    public BigDecimal calculoFeriadosTrabajadosBoleta(PlanillaExcel p) {
+//		return funciones.sumarVeinte(p.getBasicoCal(),p.getDominicalCal(), p.getBucCal(), p.getVacacionalCal(), p.getFeriadosDescansosCal(), p.getHorasExtrasSesentaCal(), p.getHorasExtrasCienCal(), p.getGratificacionCal(),p.getBonifExtraTemporalCal(), p.getMovilidadCal(), p.getIndemnizacionCal(), p.getAsignEscolar_cal(), p.getContactoAguaCal(), p.getAguasServidasCal(),p.getBonificacionAlturaCal(),
+//				p.getBonificacionAltitudCal(), p.getTurnoNocheCal(), 6);
+        return funciones.dividirRedondear(funciones.sumarVeinte(p.getBasicoCal(), p.getDominicalCal(), p.getBucCal(),
+                p.getVacacionalCal(), p.getFeriadosDescansosCal(), p.getHorasExtrasSesentaCal(),
+                p.getHorasExtrasCienCal(), p.getGratificacionCal(), p.getBonifExtraTemporalCal(), p.getMovilidadCal(),
+                p.getIndemnizacionCal(), p.getAsignEscolar_cal(), p.getContactoAguaCal(), p.getAguasServidasCal(),
+                p.getBonificacionAlturaCal(), p.getBonificacionAltitudCal(), p.getTurnoNocheCal(), 6),
+                p.getDiasTrabajados(), 6);
+    }
+
+}

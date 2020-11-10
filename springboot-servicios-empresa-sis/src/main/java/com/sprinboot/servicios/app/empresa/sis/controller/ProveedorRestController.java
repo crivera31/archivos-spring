@@ -1,0 +1,167 @@
+package com.sprinboot.servicios.app.empresa.sis.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sprinboot.servicios.app.empresa.sis.service.IContAllPersonServiceImpl;
+import com.sprinboot.servicios.empresa.commons.entity.ContAllPerson;
+import com.sprinboot.servicios.empresa.commons.entity.TipoAllPersona;
+
+
+
+@RestController
+@RequestMapping("/proveedor")
+public class ProveedorRestController {
+
+	@Autowired
+	private IContAllPersonServiceImpl contAllPerson;
+
+	@GetMapping("/lista-proveedores/page/{page}")
+	public Page<ContAllPerson> conAllPersonPage(@PathVariable Integer page) {
+		Pageable pageable = PageRequest.of(page, 15);
+		return contAllPerson.findByEnabledPaged(pageable);
+	}
+
+	
+	@GetMapping("/tipo-all-persona")
+	public List<TipoAllPersona> tipoAllPersonaList() {
+		return contAllPerson.findTipoAllPersonaAll();
+	}
+
+
+
+
+
+	@PostMapping("/agregar-proveedores")
+	public ResponseEntity<?> agregarProveedores(@Valid @RequestBody ContAllPerson contAllPersonVar,
+			BindingResult result) {
+		Map<String, Object> response = new HashMap<>();
+
+		if (result.hasErrors()) {
+			List<String> errors = result.getFieldErrors().stream()
+					.map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+					.collect(Collectors.toList());
+
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+		ContAllPerson contAllPersonNew = null;
+		try {
+			contAllPersonNew = contAllPerson.save(contAllPersonVar);
+		} catch (DataAccessException e) {
+			Throwable t = e.getCause();
+			while ((t!=null) && !(t instanceof ConstraintViolationException)) {
+				t=t.getCause();
+			}
+			if(t instanceof ConstraintViolationException) {
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}else {
+				response.put("mensaje", "Error en el Servidor");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+		} 
+		response.put("mensaje", "El Provedor fue creado con éxito");
+		response.put("proveedores", contAllPersonVar);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+	}
+
+	@PutMapping("/editar-proveedores/{id}")
+	public ResponseEntity<?> actualizarProveedores(@Valid @RequestBody ContAllPerson contAllPersonVar,
+			BindingResult result, @PathVariable Integer id) {
+		Map<String, Object> response = new HashMap<>();
+		if (result.hasErrors()) {
+			List<String> errors = result.getFieldErrors().stream()
+					.map(err -> "El campo'" + err.getField() + "' :" + err.getDefaultMessage())
+					.collect(Collectors.toList());
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+		ContAllPerson contAllPersonaActual = contAllPerson.findById(id);
+		if (contAllPersonaActual == null) {
+			response.put("mensaje", "Error: no se pudo editar, el Proveedor con el ID "
+					.concat(id.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		ContAllPerson update = null;
+		try {
+			update = contAllPerson.save(contAllPersonVar);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar en el servidor");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El Proveedor fue actualizado con éxito");
+		response.put("cliente", update);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+	}
+
+	
+
+	
+	
+	@GetMapping("/find-documento/{codigo}")
+	public  ResponseEntity<?>  findByDocumentoIdentidad(@PathVariable String codigo) {
+		Map<String, Object> response = new HashMap<>();
+		ContAllPerson contAllPersonEntity = null;
+		try {
+			contAllPersonEntity = contAllPerson.findPorDocumentoDrt(codigo);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error en el Servidor");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			response.put("error_data_1", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (contAllPersonEntity == null) {
+			response.put("mensaje", "El Código ".concat(codigo.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<ContAllPerson>(contAllPersonEntity, HttpStatus.OK);
+		 
+	}
+	
+	@GetMapping("/find-lstpers/{codigo}")
+	public  ResponseEntity<?>  findByDocumento(@PathVariable String codigo) {
+		Map<String, Object> response = new HashMap<>();
+		List<ContAllPerson> contAllPersonEntity = null;
+		try {
+			contAllPersonEntity = contAllPerson.filtrarPorCodigo(codigo);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error en el Servidor");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			response.put("error_data_1", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (contAllPersonEntity == null) {
+			response.put("mensaje", "El Código ".concat(codigo.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<ContAllPerson>>(contAllPersonEntity, HttpStatus.OK);
+		 
+	}
+
+	
+}

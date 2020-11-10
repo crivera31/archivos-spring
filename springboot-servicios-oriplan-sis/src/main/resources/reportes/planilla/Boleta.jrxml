@@ -1,0 +1,1754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BoletaDet" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="840" leftMargin="0" rightMargin="2" topMargin="0" bottomMargin="0" uuid="9dba76f0-fae9-4573-8ea3-1c0d4e9ec1e7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="empresa" class="java.lang.String"/>
+	<parameter name="rucEmpresa" class="java.lang.String"/>
+	<parameter name="consorcio" class="java.lang.String"/>
+	<parameter name="direccion_empresa" class="java.lang.String"/>
+	<parameter name="nomObra" class="java.lang.String"/>
+	<parameter name="jornalBasico" class="java.math.BigDecimal"/>
+	<parameter name="buc" class="java.math.BigDecimal"/>
+	<parameter name="movilidad" class="java.math.BigDecimal"/>
+	<parameter name="dominical" class="java.math.BigDecimal"/>
+	<parameter name="vacaciones" class="java.math.BigDecimal"/>
+	<parameter name="cts" class="java.math.BigDecimal"/>
+	<parameter name="fiestas_navidenas" class="java.math.BigDecimal"/>
+	<parameter name="fiestasPatrias" class="java.math.BigDecimal"/>
+	<parameter name="asignacionEscolar" class="java.math.BigDecimal"/>
+	<parameter name="feriadosDescansados" class="java.math.BigDecimal"/>
+	<parameter name="descansoMedico" class="java.math.BigDecimal"/>
+	<parameter name="horas_extras_sesenta" class="java.math.BigDecimal"/>
+	<parameter name="horasExtrasCien" class="java.math.BigDecimal"/>
+	<parameter name="horasExtrasFijas" class="java.math.BigDecimal"/>
+	<parameter name="contactoAgua" class="java.math.BigDecimal"/>
+	<parameter name="bonificacionAltura" class="java.math.BigDecimal"/>
+	<parameter name="bonificacionAltitud" class="java.math.BigDecimal"/>
+	<parameter name="horarioNocturno" class="java.math.BigDecimal"/>
+	<parameter name="essalud_vida" class="java.math.BigDecimal"/>
+	<parameter name="conafovicer" class="java.math.BigDecimal"/>
+	<parameter name="comision" class="java.math.BigDecimal"/>
+	<parameter name="prima" class="java.math.BigDecimal"/>
+	<parameter name="aporte" class="java.math.BigDecimal"/>
+	<parameter name="aporteAdicionalAfp" class="java.math.BigDecimal"/>
+	<parameter name="comisionMixta" class="java.math.BigDecimal"/>
+	<parameter name="comisionAnualSaldo" class="java.math.BigDecimal"/>
+	<parameter name="total" class="java.math.BigDecimal"/>
+	<parameter name="tope" class="java.math.BigDecimal"/>
+	<parameter name="feriadosTrabajados" class="java.math.BigDecimal"/>
+	<parameter name="gratificacion" class="java.math.BigDecimal"/>
+	<parameter name="bonificacion" class="java.math.BigDecimal"/>
+	<parameter name="gratiDias" class="java.math.BigDecimal"/>
+	<parameter name="boniDias" class="java.math.BigDecimal"/>
+	<parameter name="aguasHervidas" class="java.math.BigDecimal"/>
+	<parameter name="totalDescuentos" class="java.math.BigDecimal"/>
+	<parameter name="netoPagar" class="java.math.BigDecimal"/>
+	<parameter name="dias_contacto_agua" class="java.math.BigDecimal"/>
+	<parameter name="dias_aguas_servidas" class="java.math.BigDecimal"/>
+	<parameter name="dias_altura" class="java.math.BigDecimal"/>
+	<parameter name="dias_altitud" class="java.math.BigDecimal"/>
+	<parameter name="dias_turno_noche" class="java.math.BigDecimal"/>
+	<parameter name="esalud_porcentaje" class="java.lang.String"/>
+	<parameter name="sctr_escalud_porcentaje" class="java.lang.String"/>
+	<parameter name="sctr_salud_eps_porcentaje" class="java.lang.String"/>
+	<parameter name="sctr_pensiones_porcentaje" class="java.lang.String"/>
+	<parameter name="aporte_adicional_pensiones_porcentaje" class="java.lang.String"/>
+	<parameter name="mas_vida" class="java.math.BigDecimal"/>
+	<parameter name="onp_porcentaje" class="java.lang.String"/>
+	<parameter name="fondo_pensiones_porcentaje" class="java.lang.String"/>
+	<parameter name="comision_sobre_flujo_porcentaje" class="java.lang.String"/>
+	<parameter name="comision_mixta_sobre_flujo_porcentaje" class="java.lang.String"/>
+	<parameter name="prima_seguro_porcentaje" class="java.lang.String"/>
+	<parameter name="conafovicer_porcentaje" class="java.lang.String"/>
+	<parameter name="comision_sobre_flujo" class="java.math.BigDecimal"/>
+	<parameter name="comision_mixta_sobre_flujo" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="anio" class="java.lang.String"/>
+	<field name="regimenLabroal" class="java.lang.String"/>
+	<field name="obra" class="java.lang.String"/>
+	<field name="declaracion" class="java.lang.String"/>
+	<field name="dni" class="java.lang.String"/>
+	<field name="nombresCompletos" class="java.lang.String"/>
+	<field name="segmento" class="java.lang.String"/>
+	<field name="ocupacion" class="java.lang.String"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="fechaIngreso" class="java.util.Date"/>
+	<field name="fechaCese" class="java.sql.Date"/>
+	<field name="tipoGrati" class="java.lang.String"/>
+	<field name="numSemanaQuincena" class="java.lang.Integer"/>
+	<field name="periodoSemanal" class="java.lang.String"/>
+	<field name="sistemaPensiones" class="java.lang.String"/>
+	<field name="cussp" class="java.lang.String"/>
+	<field name="tipoComision" class="java.lang.String"/>
+	<field name="tipoContratoEssalud" class="java.lang.String"/>
+	<field name="numHijos" class="java.lang.Integer"/>
+	<field name="bonifAltura" class="java.math.BigDecimal"/>
+	<field name="boniAltitud" class="java.math.BigDecimal"/>
+	<field name="contactoAguaCeleste" class="java.math.BigDecimal"/>
+	<field name="aguasHervidas" class="java.math.BigDecimal"/>
+	<field name="horarioNocturno" class="java.math.BigDecimal"/>
+	<field name="diasTrabajados" class="java.math.BigDecimal"/>
+	<field name="numNormalHrsTrabajadas" class="java.math.BigDecimal"/>
+	<field name="numHorasExtrasSesenta" class="java.math.BigDecimal"/>
+	<field name="numHorasExtrasCien" class="java.math.BigDecimal"/>
+	<field name="numDiasFeriadosDescanso" class="java.math.BigDecimal"/>
+	<field name="numDiasFeriadosTrabaj" class="java.math.BigDecimal"/>
+	<field name="numDiasDescansoMedico" class="java.math.BigDecimal"/>
+	<field name="jornalBasicoCal" class="java.math.BigDecimal"/>
+	<field name="basicoRCal" class="java.math.BigDecimal"/>
+	<field name="basicoCal" class="java.math.BigDecimal"/>
+	<field name="bucCal" class="java.math.BigDecimal"/>
+	<field name="dominicalCal" class="java.math.BigDecimal"/>
+	<field name="vacacionalCal" class="java.math.BigDecimal"/>
+	<field name="asignEscolar_cal" class="java.math.BigDecimal"/>
+	<field name="feriadosDescansosCal" class="java.math.BigDecimal"/>
+	<field name="feriadosTrabajadosCal" class="java.math.BigDecimal"/>
+	<field name="descansoMedicoCal" class="java.math.BigDecimal"/>
+	<field name="movilidadCal" class="java.math.BigDecimal"/>
+	<field name="indemnizacionCal" class="java.math.BigDecimal"/>
+	<field name="gratificacionCal" class="java.math.BigDecimal"/>
+	<field name="bonifExtraTemporalCal" class="java.math.BigDecimal"/>
+	<field name="horasExtrasSesentaCal" class="java.math.BigDecimal"/>
+	<field name="horasExtrasCienCal" class="java.math.BigDecimal"/>
+	<field name="turnoNocheCal" class="java.math.BigDecimal"/>
+	<field name="contactoAguaCal" class="java.math.BigDecimal"/>
+	<field name="aguasServidasCal" class="java.math.BigDecimal"/>
+	<field name="bonificacionAlturaCal" class="java.math.BigDecimal"/>
+	<field name="bonificacionAltitudCal" class="java.math.BigDecimal"/>
+	<field name="condicionTrabajoCal" class="java.math.BigDecimal"/>
+	<field name="horasExtrasFijasCal" class="java.math.BigDecimal"/>
+	<field name="totalRemuneracionCal" class="java.math.BigDecimal"/>
+	<field name="totalAfecto" class="java.math.BigDecimal"/>
+	<field name="onp" class="java.math.BigDecimal"/>
+	<field name="comisionAfp" class="java.math.BigDecimal"/>
+	<field name="primaAfp" class="java.math.BigDecimal"/>
+	<field name="aporteObligatorioAfp" class="java.math.BigDecimal"/>
+	<field name="aporteAdicAfp" class="java.math.BigDecimal"/>
+	<field name="conafovicer" class="java.math.BigDecimal"/>
+	<field name="adelanto" class="java.math.BigDecimal"/>
+	<field name="cuotaSindical" class="java.math.BigDecimal"/>
+	<field name="otrosDescuentos" class="java.math.BigDecimal"/>
+	<field name="totalDsctos" class="java.math.BigDecimal"/>
+	<field name="netoPagar" class="java.math.BigDecimal"/>
+	<field name="essalud_nueve" class="java.math.BigDecimal"/>
+	<field name="stcr" class="java.math.BigDecimal"/>
+	<field name="sctrEssaludEps" class="java.math.BigDecimal"/>
+	<field name="sctrPensionesPrivado" class="java.math.BigDecimal"/>
+	<field name="sctrEssaludVida" class="java.math.BigDecimal"/>
+	<field name="aporteAdicionalAfp" class="java.math.BigDecimal"/>
+	<field name="totalAporteEmpleados" class="java.math.BigDecimal"/>
+	<field name="refrigerio" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<image>
+				<reportElement x="66" y="5" width="363" height="583" uuid="0aaa1ce0-5cbb-413f-b209-d8c01164c2a2"/>
+				<imageExpression><![CDATA["src/main/resources/reportes/planilla/boletapago.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="430" y="5" width="363" height="583" uuid="18415bab-af7a-40f8-a6e0-1a7fa0696a57"/>
+				<imageExpression><![CDATA["src/main/resources/reportes/planilla/boletapago.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="130" y="58" width="270" height="8" uuid="296bb82a-bf96-4b2b-a113-aca92e75dbd2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{direccion_empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="40" width="270" height="8" uuid="a01032eb-1a6b-4b9e-9bad-3f2d71b61da4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="49" width="270" height="8" uuid="23377a50-efae-42e0-8f26-8b1e5f799552"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{rucEmpresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="67" width="270" height="8" uuid="7491bebe-c630-4739-adf0-6f3640953354"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{consorcio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="85" width="158" height="8" uuid="68914529-0b93-4eab-b187-89b5f7277f05">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="94" width="158" height="8" uuid="210b55bc-bbd9-4764-9f69-4bc518017fe7"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombresCompletos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="103" width="158" height="8" uuid="df646068-c99f-49c3-a6f7-7519944ff5e0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dni}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="241" y="112" width="159" height="9" uuid="f1b8b512-a176-4d73-afa1-c91238e26c98"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ocupacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="241" y="122" width="158" height="8" uuid="e16429f4-4680-491f-88f7-674ebcc37955">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaIngreso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="241" y="131" width="158" height="8" uuid="f95d6a57-e6aa-4b16-8a66-2df95373fc4b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaCese}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="241" y="144" width="158" height="36" uuid="51b5ab30-fb94-4d2a-95fd-f8383cd95c59"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="185" width="156" height="8" uuid="6174ea0b-1533-4f00-a06d-2557300dcfe1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sistemaPensiones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="194" width="156" height="8" uuid="d590c8f8-6cfd-4af6-a9c1-08f8e96974fd"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cussp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="204" width="157" height="9" uuid="da184f2b-d53e-4d3d-a49f-8ce88d749c7b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="213" width="100" height="9" uuid="aa507cee-67f7-4683-a6b8-0326af0211d9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numSemanaQuincena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="222" width="100" height="9" uuid="ebc70be3-a638-4560-aab9-ef5332b9a121"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periodoSemanal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="242" y="231" width="157" height="9" uuid="c7e57516-93ae-4639-8456-00a51e4eb937"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diasTrabajados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="242" y="241" width="157" height="9" uuid="535cfc69-f36b-4856-b5c6-d5c0a61181de"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="250" width="157" height="9" uuid="f0a10655-285c-404c-8b32-10ee26c8bee2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHijos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="281" width="30" height="9" uuid="d0d97ee6-def6-4b7f-8f1c-66ec22370b14"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{basicoCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="281" width="19" height="9" uuid="4570b0ab-73ca-4e88-aa3e-06c887fdbf83"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="291" width="19" height="9" uuid="54cbf2a2-b483-4cb5-b124-335d0cccdc60"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="300" width="19" height="9" uuid="c6ea2f6a-ca66-476d-bf61-4ddda2d5f9c3"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="309" width="19" height="9" uuid="51242a2b-59c2-42a3-ad9b-17c5d105fbab"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="309" width="23" height="10" uuid="f47f4048-eb9c-4bf9-b642-f7c038ff7538"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vacaciones}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="309" width="30" height="9" uuid="d04a5743-e8c0-4472-93e7-60087e731de2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vacacionalCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="291" width="30" height="9" uuid="dc160368-ca73-45dc-a2df-20a0c9798f11"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dominicalCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="300" width="30" height="9" uuid="5d8f508b-72f9-4f2e-a52c-4f8210c87c64"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bucCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="154" y="301" width="23" height="9" uuid="e0350141-912d-43bd-aed5-f6cbf22245a9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{buc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="291" width="25" height="8" uuid="308b8d63-6515-4724-90e8-913e787d6797"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dominical}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="318" width="26" height="10" uuid="36872f52-98dd-4e5d-80a5-b1a0f7c2bc6a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{feriadosDescansados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="282" width="27" height="8" uuid="48855042-0be2-4499-86a5-4053374dbb27"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jornalBasico}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="318" width="30" height="10" uuid="ff4ae4cd-d11b-4369-9d96-e419b7efe67b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{feriadosDescansosCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="319" width="19" height="9" uuid="b2f1d5f0-c9a7-4aad-8d4c-1e9d98a2bd79"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numDiasFeriadosDescanso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="328" width="24" height="9" uuid="18cf8819-8c0a-497a-a749-f38ba7d72cd7"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{feriadosTrabajados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="328" width="20" height="9" uuid="ef500cf3-874a-48e2-b1d9-721682d2c166"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numDiasFeriadosTrabaj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="201" y="328" width="31" height="8" uuid="7b566381-18aa-4589-bc8f-4177962c6ac3"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{feriadosTrabajadosCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="337" width="31" height="9" uuid="b3b78ff4-276d-4417-9347-8b39a0846fe9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasSesenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="346" width="31" height="9" uuid="555b3481-7b19-42d5-b3b0-b23106ceb54a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasCien}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="337" width="20" height="9" uuid="af5ab2ad-5fb8-4cc5-b3cf-73fd7a13d13e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasSesenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="346" width="20" height="9" uuid="7839381d-274e-406c-a412-4bea31ad7ef1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasCien}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="337" width="24" height="8" uuid="c633787d-6384-44bf-a8e4-930fba77f080"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horas_extras_sesenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="346" width="24" height="8" uuid="da26712e-e0bb-4fff-bd61-bb471d31f4e2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horasExtrasCien}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="355" width="24" height="8" uuid="26382b80-fa44-468a-969f-206b9a5dcea7"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{gratificacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="365" width="24" height="8" uuid="5ed7a4f1-7db4-4f52-8037-83bbb7b3639c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bonificacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="355" width="31" height="8" uuid="d6f32f6a-a44b-4987-8cfa-51cd3c3cf9a5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gratificacionCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="365" width="31" height="8" uuid="5c6c3f4e-de74-43d7-9a45-3dc14f1710d0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonifExtraTemporalCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="356" width="20" height="8" uuid="df564a6a-2640-463d-a351-32d3207936a8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{gratiDias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="365" width="20" height="8" uuid="c8395a57-a3f2-4da0-bef6-63c5945defad"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{boniDias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="375" width="23" height="8" uuid="b861bf54-e90a-4f42-98f6-e02a2fba47c4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{movilidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="384" width="23" height="8" uuid="1eb00042-accf-4a51-9b41-ebfb8a69b689"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cts}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="393" width="23" height="8" uuid="521b7ee6-ee46-4997-a52e-b35224f94821"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{asignacionEscolar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="403" width="23" height="8" uuid="3bc79117-72db-4735-ab15-470f79368693"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{contactoAgua}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="411" width="23" height="8" uuid="642f85a6-16ee-43e5-9012-9779f6816c6f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aguasHervidas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="420" width="23" height="8" uuid="44b085eb-7e72-4ce4-bd70-f8e3e372a5f2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bonificacionAltura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="430" width="23" height="8" uuid="491b9945-da08-4825-bfc6-b2756dd07c1b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bonificacionAltitud}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="440" width="23" height="8" uuid="088f23e0-2024-4a0f-967e-fa78290eb97a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horarioNocturno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="467" width="23" height="8" uuid="bbb37490-4df9-4280-a3fa-fdfa437d6674"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descansoMedico}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="449" width="31" height="7" uuid="2f8b6854-5d63-440c-9c65-7fa1224ce8c2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{refrigerio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="374" width="30" height="9" uuid="d765a013-4bae-43c3-b421-ed19b1de63d2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movilidadCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="384" width="30" height="9" uuid="e78ccccf-176c-4944-99c9-664131e38a6d"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indemnizacionCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="392" width="30" height="9" uuid="13dbe3fe-22b0-4a20-bd11-7999cac7b1e0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{asignEscolar_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="402" width="31" height="9" uuid="5b342e6c-0f1d-49eb-b857-02be94a4e671"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contactoAguaCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="410" width="31" height="9" uuid="1691b0a5-da6d-448e-959c-e0c7ae8123e4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aguasServidasCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="420" width="31" height="9" uuid="e99da7a5-7c45-40f6-9710-aa17e9e21ec3"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonificacionAlturaCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="429" width="31" height="9" uuid="26317df7-ae29-4799-bd5c-4442fb15a4ed"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonificacionAltitudCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="439" width="30" height="8" uuid="f23ae160-5615-464b-8571-0e7d3547533c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turnoNocheCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="467" width="31" height="7" uuid="120fcc91-55d9-4814-8a9f-3ae5a0963bdd"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descansoMedicoCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="477" width="31" height="7" uuid="f9ca9b0f-244c-4e1c-9457-44d3f612b29c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalRemuneracionCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="513" width="31" height="10" uuid="386a37ea-b62c-4ef8-a568-fcc545b19bba"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adelanto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="505" width="33" height="7" uuid="0423cd72-c4ac-4514-807a-d31024fd0480"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{netoPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="202" y="496" width="29" height="8" uuid="143b7aa0-cd08-45c3-9f44-edbcbbf113d2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDescuentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="364" y="495" width="29" height="8" uuid="d3127ff1-63bf-4bee-97ad-03f1ba576f22"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDescuentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="201" y="523" width="29" height="8" uuid="c0ead058-266f-4988-a944-d81046ba827b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{netoPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="374" width="19" height="9" uuid="2e80921c-ab80-4c86-b4d6-e7473546cea6"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="384" width="19" height="9" uuid="2ae06342-d794-4a5b-b2a8-6a78d4dc1307"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="393" width="21" height="8" uuid="b04342c9-7948-4418-9011-637a7fb6e2c1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHijos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="402" width="20" height="9" uuid="2258532b-46bd-407f-a57a-57083f14261f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_contacto_agua}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="411" width="20" height="8" uuid="6df2ff6b-f9ff-4fd4-82b5-6ac0d3e4ed36"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_aguas_servidas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="421" width="20" height="8" uuid="43a209e5-e351-4b60-9061-52d210c64eb0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_altura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="179" y="430" width="20" height="8" uuid="cf434fa8-17dd-43ad-b1c1-dbac2d7406c6"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_altitud}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="180" y="440" width="20" height="8" uuid="a85a3430-2c99-4518-8e7d-f0ea560f66f4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_turno_noche}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="200" y="458" width="34" height="7" uuid="41c0bd90-3012-4681-8089-cc0637abb190"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{condicionTrabajoCal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="291" width="22" height="8" uuid="74ccac1a-1450-4fae-a9a3-92e811c361bd"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{esalud_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="300" width="22" height="9" uuid="0329fa8c-274a-4fad-9d06-d8e7521f163f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sctr_escalud_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="309" width="22" height="9" uuid="9b42f2e7-65e2-463e-81f7-e6e4fd70349f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sctr_salud_eps_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="319" width="22" height="9" uuid="1baf3b41-db10-40db-a68c-1cf6d784528b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sctr_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="328" width="22" height="9" uuid="5aafa8e7-23c8-46b5-b2fb-d5d8eb8bc1cd"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aporte_adicional_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="290" width="22" height="9" uuid="e618e916-a119-47f3-9f6b-b28aba806c0a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{essalud_nueve}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="300" width="22" height="9" uuid="65acb441-24db-41cc-b7a5-9b1fc84f131f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stcr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="309" width="22" height="9" uuid="cfcae3aa-ae3c-4229-bc3b-2ad5ece2199e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sctrEssaludEps}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="319" width="22" height="9" uuid="c3f4095e-c7ff-474b-8cc4-827971b51d07"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sctrPensionesPrivado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="327" width="22" height="9" uuid="759361ac-4f7c-49d7-ba92-0419cc7dc74c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporteAdicionalAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="368" y="346" width="22" height="8" uuid="ac4bf024-3247-4f60-a8dd-2051af0a6dd5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAporteEmpleados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="367" y="337" width="29" height="8" uuid="693c6b60-a4a0-4029-87db-c66d9898f37d"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{mas_vida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="366" y="374" width="25" height="8" uuid="61e4860f-0c21-41f9-9248-d15671ff7a80"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{onp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="374" width="27" height="9" uuid="528bf0e5-3332-4678-89e2-44fdaad9b927"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{onp_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="394" width="27" height="7" uuid="c71be897-53b2-4214-9ca8-6d4c879d0afa"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fondo_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="326" y="412" width="27" height="7" uuid="a79e2cd2-bc67-43ab-84ff-368972de742d"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_sobre_flujo_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="326" y="420" width="27" height="7" uuid="fda98460-35c7-4bf5-a0fe-3b1c3c408882"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_mixta_sobre_flujo_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="431" width="27" height="7" uuid="ed7e6781-2cf9-4451-a169-df106a1ae0f2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{prima_seguro_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="468" width="27" height="7" uuid="cef3e1e6-da3d-4350-a8af-ac74629574c7"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{conafovicer_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="403" width="27" height="7" uuid="809edcbe-dcf4-4a5c-9bd1-97dc3288b682"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aporte_adicional_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="364" y="393" width="28" height="7" uuid="10e4d421-592b-46c7-b840-81fbf6a7a2c9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporteObligatorioAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="364" y="402" width="27" height="8" uuid="9d1bef0f-6d29-451c-a2f6-ebf623394225"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporteAdicAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="364" y="430" width="27" height="8" uuid="bb3ec47f-a0dc-443f-89e0-1669b6c06b0f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{primaAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="364" y="412" width="27" height="7" uuid="d05611f9-7bce-4ff5-8948-f5a0b8dca22b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_sobre_flujo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="364" y="421" width="27" height="7" uuid="37504b8b-47c0-42f1-acfe-544c517b25d1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_mixta_sobre_flujo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="363" y="466" width="27" height="9" uuid="793e36c6-dce1-4934-ac20-dca2150a8b09"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conafovicer}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="363" y="477" width="30" height="7" uuid="97bb4c82-2b8d-4f8e-90ac-d92417cf7f47"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuotaSindical}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="362" y="486" width="30" height="7" uuid="a38540f3-af3f-4242-89da-ac3a47a38dcd"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{otrosDescuentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="363" y="514" width="30" height="7" uuid="1a271973-40ee-4845-9bb4-b4ed78c10401"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAfecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="58" width="270" height="8" uuid="c1b417ef-ec30-40a4-bc0f-bed581203fe8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{direccion_empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="40" width="270" height="8" uuid="0b8b73ff-151a-44b7-b290-628d5b1e8ed5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="49" width="270" height="8" uuid="a6a75b37-8ec2-48de-8866-89db36a45f6a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{rucEmpresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="67" width="270" height="8" uuid="c455bc5f-3c53-4e05-bc3c-3938b7178947"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{consorcio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="606" y="85" width="158" height="8" uuid="17d7422f-ea43-4f8f-b920-561fd2ced354">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="606" y="94" width="158" height="8" uuid="6251978a-0aef-497a-8b4a-35809910d867"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombresCompletos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="606" y="103" width="158" height="8" uuid="9c19d9d3-75ab-472d-b148-109cf4dc16a4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dni}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="605" y="112" width="159" height="9" uuid="dba8494a-94c2-4ea0-bec6-6864e554f8ce"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ocupacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="605" y="122" width="158" height="8" uuid="e5d6627a-d65a-4c5e-b9c8-39089e9c5aaa">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaIngreso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="605" y="131" width="158" height="8" uuid="7145181c-ca11-4869-a726-af53eae588c2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaCese}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="605" y="144" width="158" height="36" uuid="8e8bb90d-ebd6-46d4-807f-e9ed4eb031a8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="185" width="156" height="8" uuid="7bf8d80f-99df-4277-ad2d-0188971597e5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sistemaPensiones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="194" width="156" height="8" uuid="a1c089a2-ce4e-4161-95e7-f0189c9e2622"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cussp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="204" width="157" height="9" uuid="030c407d-2802-45d0-9664-16d11ab1159f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="213" width="100" height="9" uuid="a7fb6d82-0551-4bf1-880a-31c2808d7d61"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numSemanaQuincena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="606" y="222" width="100" height="9" uuid="f8e4ef93-f2fe-4df2-a04a-063a48adcea9"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periodoSemanal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="606" y="231" width="157" height="9" uuid="2a7ad75b-c257-428d-ad19-2e96cd900061"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diasTrabajados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="606" y="241" width="157" height="9" uuid="d51f2218-9aa0-4535-89cc-4908cbd69c53"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="607" y="250" width="157" height="9" uuid="29c9f701-1834-40a4-b56d-d67577cd88a4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHijos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="281" width="30" height="9" uuid="5b8b4465-57d3-4995-bd58-b3665cb71845"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{basicoCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="281" width="19" height="9" uuid="0f1db90f-f55b-468e-8801-c4f6a79cd486"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="291" width="19" height="9" uuid="bb03c01d-847d-43d7-92fc-f3ef76a12947"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="300" width="19" height="9" uuid="ce7507fc-7e68-4755-8b06-b0129df7748c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="309" width="19" height="9" uuid="533f1e2c-d2c5-451d-b90d-655cdbc79196"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="309" width="23" height="10" uuid="92fb3707-0426-4022-8e26-fb83d4fd65f5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vacaciones}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="309" width="30" height="9" uuid="e5a10ed3-760d-47ee-97f6-bfa28290b9ca"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vacacionalCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="291" width="30" height="9" uuid="ec72fead-e7ea-4068-ab37-c41f62e6f603"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dominicalCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="300" width="30" height="9" uuid="3ea5e947-87cd-4b0e-8416-a52bc2b34924"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bucCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="518" y="301" width="23" height="9" uuid="07387694-5938-4670-ac57-620d15092a62"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{buc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="291" width="25" height="8" uuid="736454a6-98c8-4b73-bb64-0419951c0e32"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dominical}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="318" width="26" height="10" uuid="d4f531b0-56ef-4561-ac9a-68d1c20c62e2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{feriadosDescansados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="282" width="27" height="8" uuid="0eb62bc7-7f7b-4424-af35-24c02ac76cca"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jornalBasico}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="318" width="30" height="10" uuid="ab7d29a5-8798-426e-840d-4c800f855aa5"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{feriadosDescansosCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="319" width="19" height="9" uuid="ed9ad79f-a205-4bab-973b-21308e2e8553"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numDiasFeriadosDescanso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="328" width="24" height="9" uuid="e9ed47e9-1cb5-4ed5-94bd-be6568132db0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{feriadosTrabajados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="328" width="20" height="9" uuid="a6bd27f4-3098-4bf2-b59b-f1b621cf42bb"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numDiasFeriadosTrabaj}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="328" width="31" height="8" uuid="f0ebbe7f-0ada-4ef1-922e-272ef5551343"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{feriadosTrabajadosCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="337" width="31" height="9" uuid="18a8165e-1496-470a-84dc-95a1ff488853"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasSesenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="346" width="31" height="9" uuid="51042201-a044-4c0d-9077-973f26a40bde"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasCien}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="337" width="20" height="9" uuid="8e0a4d2d-aae8-4676-ac3b-e1e19a2f46ee"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasSesenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="346" width="20" height="9" uuid="f62de32d-0faa-4729-a5c7-91c95717c06d"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHorasExtrasCien}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="337" width="24" height="8" uuid="993e8842-dcb7-453f-998e-150c97f5b2de"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horas_extras_sesenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="346" width="24" height="8" uuid="4654d1d9-940e-48cb-9180-1f89d6ed682a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horasExtrasCien}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="355" width="24" height="8" uuid="8cdeb03f-4b80-4960-b92f-a2a1ba450fad"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{gratificacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="365" width="24" height="8" uuid="86ffa3a8-2267-4560-88ab-aeec2c1b3eb0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bonificacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="355" width="31" height="8" uuid="0c7ac9b4-4c63-4fee-bab1-ecb13f7c47ef"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gratificacionCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="365" width="31" height="8" uuid="ba126718-d852-4ecf-9e9e-c66e46a1f5c0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonifExtraTemporalCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="356" width="20" height="8" uuid="eb6e6214-30f5-4c72-ad3c-3bdb3e20844b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{gratiDias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="365" width="20" height="8" uuid="bcb37a6c-9d25-4d6f-b538-ffbba77e3d13"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{boniDias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="375" width="23" height="8" uuid="cd07e628-1788-4c71-ab47-19a51226c061"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{movilidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="384" width="23" height="8" uuid="26b874ce-f343-454d-b319-00004e93a5f1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cts}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="393" width="23" height="8" uuid="15f1f0f3-49e9-4dee-a916-f3d4bda34bfa"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{asignacionEscolar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="403" width="23" height="8" uuid="16222140-4ac9-49ca-a1a0-453a600d9e5f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{contactoAgua}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="411" width="23" height="8" uuid="b61b4c0d-d5e3-47d3-81e2-78d3fcc7b635"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aguasHervidas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="420" width="23" height="8" uuid="c256eb61-e536-47c3-b596-866bdccc8de1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bonificacionAltura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="430" width="23" height="8" uuid="5e24347f-0712-449c-bdfc-b9ddc34d497a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bonificacionAltitud}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="440" width="23" height="8" uuid="6021038f-4212-4afa-afda-b694a07d91ef"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horarioNocturno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="467" width="23" height="8" uuid="f27d1e51-5576-439c-9874-fa6a7f0efbc2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descansoMedico}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="449" width="31" height="7" uuid="4dbebd18-940b-49eb-af54-3b8f09a08e74"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{refrigerio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="374" width="30" height="9" uuid="d2521a3d-6889-42dd-b18c-a7c3f83eb7b0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movilidadCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="384" width="30" height="9" uuid="3ae2a71c-80c6-4cb2-b811-a4cdc4576cc2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indemnizacionCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="392" width="30" height="9" uuid="be8f2bfa-aa07-4626-bfc0-2c15bf77937b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{asignEscolar_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="402" width="31" height="9" uuid="b3b4c89b-fd91-4c2a-bba1-83b063f8c98c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contactoAguaCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="410" width="31" height="9" uuid="e9979232-6ee6-44f7-b707-2a28308b8ec2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aguasServidasCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="420" width="31" height="9" uuid="c4121060-5caf-4407-8f92-8fb2731ad7a6"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonificacionAlturaCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="429" width="31" height="9" uuid="9d2582dd-7982-4628-8aa4-a43c196af70c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bonificacionAltitudCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="439" width="30" height="8" uuid="3ee583f7-c2b8-471e-b39e-9403399f5c6c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turnoNocheCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="467" width="31" height="7" uuid="57a608f0-b292-428d-8375-37d107ecd944"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descansoMedicoCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="477" width="31" height="7" uuid="cc9b58af-d47a-4b71-b647-82ccf00cfeea"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalRemuneracionCal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="513" width="31" height="10" uuid="da8eaec2-deea-44fa-93d3-83054762b582"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adelanto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="505" width="33" height="7" uuid="2ec3d7fe-dbe4-4baa-801a-ca09788c893f"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{netoPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="566" y="496" width="29" height="8" uuid="38fec3dd-4d0c-44db-bcea-b92e5ba3ae15"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDescuentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="728" y="495" width="29" height="8" uuid="ef7b4200-3d19-477f-a3e6-e2e6c0ca829e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDescuentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="565" y="523" width="29" height="8" uuid="36f2a531-12da-4ab1-8c43-eef705773381"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{netoPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="543" y="374" width="19" height="9" uuid="99ff08bc-471f-44b3-89da-a47db96e5d97"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="384" width="19" height="9" uuid="f646e765-9c29-4ad7-839b-b4516d30886a"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numNormalHrsTrabajadas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="543" y="393" width="21" height="8" uuid="e43c0ef5-4a23-4a95-adf1-aa430dbce21b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numHijos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="543" y="402" width="20" height="9" uuid="1e8c3e49-d285-4362-b264-b6bbdb475954"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_contacto_agua}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="543" y="411" width="20" height="8" uuid="ffc6bd92-4ddc-4c94-803a-96d17369c4a8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_aguas_servidas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="543" y="421" width="20" height="8" uuid="a9cfd6e8-b3c5-4d0c-8f68-c4f2c7d36935"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_altura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="543" y="430" width="20" height="8" uuid="3c525156-36c2-4a18-abb3-ef1777e85486"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_altitud}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="544" y="440" width="20" height="8" uuid="9b355fc6-67fd-4156-9088-28cbba6b45df"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dias_turno_noche}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="564" y="458" width="34" height="7" uuid="2f249116-dd66-4bfe-bdfc-145038cc3b2e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{condicionTrabajoCal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="291" width="22" height="8" uuid="1ceb9436-220a-4573-9a14-e0b491053ff1"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{esalud_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="300" width="22" height="9" uuid="06c8df66-8533-47a5-9bc7-cd898868d351"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sctr_escalud_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="309" width="22" height="9" uuid="651260c9-4fc4-41af-9ca2-94442d770234"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sctr_salud_eps_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="319" width="22" height="9" uuid="2ec1ed2c-3147-4a58-8e2d-5d23f3d8b15c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sctr_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="328" width="22" height="9" uuid="85604cf7-2288-4182-a68c-9056c43966b2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aporte_adicional_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="290" width="22" height="9" uuid="2c8daf66-336b-424c-9422-e68cf92b067b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{essalud_nueve}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="300" width="22" height="9" uuid="5e1d738b-ae86-42e4-b71e-f48603e9bcd8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stcr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="309" width="22" height="9" uuid="87130abb-08ba-4948-8896-436931bf34cb"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sctrEssaludEps}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="319" width="22" height="9" uuid="aef99d4e-f1b3-4176-8ddb-94a6aefea58e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sctrPensionesPrivado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="327" width="22" height="9" uuid="17525cfc-90c9-4f58-8131-f714c210d754"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporteAdicionalAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="732" y="346" width="22" height="8" uuid="3ef3dbf6-b3d1-4cab-9b97-3d3f6ffeb844"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAporteEmpleados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="731" y="337" width="29" height="8" uuid="2c9949cc-7a4b-4bf7-8e27-b74da69c6184"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{mas_vida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="730" y="374" width="25" height="8" uuid="f492d8ce-54f3-4801-9c69-9520b37ee7a8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{onp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="374" width="27" height="9" uuid="a6154963-70d8-403d-8cbd-b5ddd38c4eef"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{onp_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="394" width="27" height="7" uuid="c649b020-4cce-4382-9bb9-3ec41c7abfe4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fondo_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="690" y="412" width="27" height="7" uuid="f296a2e2-68af-4d7a-8de2-05cdfdc71cdb"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_sobre_flujo_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="690" y="420" width="27" height="7" uuid="15753a88-8ffd-4ca6-8860-b4feb0a2b20b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_mixta_sobre_flujo_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="431" width="27" height="7" uuid="6c5446cf-6c30-47d0-b71c-54efc3a269da"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{prima_seguro_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="468" width="27" height="7" uuid="063d553b-dc5e-4344-8fab-dbce601b33ae"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{conafovicer_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="403" width="27" height="7" uuid="53160ab0-4ff9-46eb-bf62-93f3258094f8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aporte_adicional_pensiones_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="728" y="393" width="28" height="7" uuid="c80af315-ebe1-473a-9ac2-ff6a21de6a02"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporteObligatorioAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="728" y="402" width="27" height="8" uuid="72d8224d-b7c1-4519-96da-bb49e1717019"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aporteAdicAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="728" y="430" width="27" height="8" uuid="5185c956-1663-4630-891b-fc56c13d26b4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{primaAfp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="728" y="412" width="27" height="7" uuid="f1094dc5-aca2-4813-a5a7-69417a9aff93"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_sobre_flujo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="728" y="421" width="27" height="7" uuid="2813a67f-7c13-4556-a0f5-07200b240c12"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comision_mixta_sobre_flujo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="727" y="466" width="27" height="9" uuid="1f390b1f-9c17-4fdb-8eb4-affdd35ed212"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conafovicer}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="727" y="477" width="30" height="7" uuid="57bf22e4-aee3-4068-9ef4-9c4295d90922"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuotaSindical}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="726" y="486" width="30" height="7" uuid="113d0749-434d-47ed-b102-fa241ac0b8a8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{otrosDescuentos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="727" y="514" width="30" height="7" uuid="79099bd1-5c53-4b37-bbce-d7c437769c1e"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAfecto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

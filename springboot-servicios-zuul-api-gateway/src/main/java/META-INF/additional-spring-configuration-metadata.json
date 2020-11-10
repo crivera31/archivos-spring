@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "myEureka.password",
+    "type": "java.lang.String",
+    "description": "A description for 'myEureka.password'"
+  },
+  {
+    "name": "myeureka.password",
+    "type": "java.lang.String",
+    "description": "A description for 'myeureka.password'"
+  }
+]}
